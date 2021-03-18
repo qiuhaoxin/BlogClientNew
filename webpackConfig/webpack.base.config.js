@@ -13,7 +13,9 @@ module.exports={
         rules:[
             {
                 test:/\.js$/,
-                use:'babel-loader',
+                loader:'babel-loader',
+                include:path.resolve(__dirname,"../src"),
+                exclude:/node_modules/
             },{
                 test:/\.css$/,
                 use:[
@@ -39,13 +41,13 @@ module.exports={
                     }
                 ]
             },{
-                test:/\.(png|jpe?g|git)$/,
-                type:'asset/resource',
+                 test:/\.(png|jpe?g|git)$/,
+                 type:'asset/resource',
             }
         ]
     },
     resolve:{
-        extensions:['.js','.jsx','.less','.css'],
+         extensions:['.js','.jsx','.less','.css'],
     },
     plugins:[
     //    new webpack.ProgressPlugin((percentage, message, ...args)=>{
@@ -60,4 +62,22 @@ module.exports={
            filename:'[name].[contenthash:8].css'
        })
     ],
+    optimization:{
+        splitChunks:{
+            chunks:'all',
+            minChunks:2,
+            cacheGroups:{
+                common:{
+                    name:'common',
+                    minSize:1,
+                    priority:1
+                },
+                vendor:{
+                    name:'vendor',
+                    test:/[\\/]node_modules[\\/]/,
+                    priority:10
+                }
+            }
+        }
+    }
 }

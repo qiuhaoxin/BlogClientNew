@@ -1,7 +1,14 @@
 import Styles from './index.less';
-import React from 'react';
+import React,{useEffect} from 'react';
+
+import Nav from '../Nav';
+import UserLogo from '../UserLogo';
+
 function Header(){
-   return <div className={Styles.header}>header</div>
+   return <div className={Styles.header}>
+      <UserLogo />
+      <Nav />
+   </div>
 }
 
 export default Header;

@@ -1,7 +1,7 @@
 const webpack=require('webpack');
 const WebpackDevServer=require('webpack-dev-server');
 const devWebpackCfg=require('../webpackConfig/webpack.dev.config');
-console.log("devWebpackCfg is ",devWebpackCfg);
+
 const path=require('path');
 const compiler=webpack(devWebpackCfg);
 const devServerCfg={
