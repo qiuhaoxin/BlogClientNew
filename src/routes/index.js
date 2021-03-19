@@ -3,9 +3,10 @@ import {HashRouter as Router,Switch,Route,Link,Redirect} from 'react-router-dom'
 import Header from '../components/Header';
 import MainPage from '../views/MainPage'; 
 import BGroundImg from '../components/BGroundImg';
+import Styles from './index.less';
 class RouteApp extends React.Component{
     render(){
-        return <div>
+        return <div className={Styles.wrapper}>
             <Header />
             <BGroundImg />
             <Router>

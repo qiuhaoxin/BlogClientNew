@@ -23,7 +23,9 @@ module.exports={
                     {
                         loader:'css-loader',
                         options:{
-                            module:true
+                            module:{
+                                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                            },
                         }
                     }
                 ]
@@ -34,7 +36,11 @@ module.exports={
                     {
                         loader:'css-loader',
                         options:{
-                            modules:true
+                            modules:{
+                                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                            },
+
+                           
                         }
                     },{
                         loader:'less-loader',

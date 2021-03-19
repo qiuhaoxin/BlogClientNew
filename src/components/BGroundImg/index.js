@@ -1,9 +1,9 @@
 import React from 'react';
-
+import Styles from './index.less';
 import bgImage from '../../assets/bg4.jpg';
 function BGroundImg(){
-    console.log('xxxxx');
-    return <div style={{backgroundImage:`url(${bgImage})`,width:'100%',height:'400px'}}>
+    return <div className={Styles.wrapper} style={{backgroundImage:`url(${bgImage})`}}>
+        
     </div>
 }
 
