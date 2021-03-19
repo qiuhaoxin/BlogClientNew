@@ -68,22 +68,4 @@ module.exports={
            filename:'[name].[contenthash:8].css'
        })
     ],
-    optimization:{
-        splitChunks:{
-            chunks:'all',
-            minChunks:2,
-            cacheGroups:{
-                common:{
-                    name:'common',
-                    minSize:1,
-                    priority:1
-                },
-                vendor:{
-                    name:'vendor',
-                    test:/[\\/]node_modules[\\/]/,
-                    priority:10
-                }
-            }
-        }
-    }
 }

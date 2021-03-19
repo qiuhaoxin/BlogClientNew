@@ -1,28 +1,19 @@
 import React from 'react';
 import Styles from './index.less';
-const menuData=[
-    {
-        name:'首页',
-        key:'mainpage',
-    },{
-        name:'发表文章',
-        key:'publish'
-    },{
-        name:'随手记',
-        key:'mark'
-    },{
-        name:'关于',
-        key:'about'
+import RouterData from '../../common/routerData';
+import {withRouter} from 'react-router-dom';
+function Nav(props){
+    function itemClick(item){
+        const {history}=props;
+        history.push(item.path);
     }
-]
-function Nav(){
     return <ul className={Styles.wrapper}>
         {
-            menuData.map(item=><li key={item.key}>
+            RouterData.map(item=><li key={item.path} onClick={()=>itemClick(item)}>
                 {item.name}
             </li>)
         }
     </ul>
 }
 
-export default Nav;
+export default withRouter(Nav);
