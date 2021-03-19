@@ -25,6 +25,24 @@ const appList=[
         title:'测试title',
         appDes:'主题描述主题描述主题描述主题描述',
         labelList,
+    },
+    {
+        key:4,
+        title:'测试title',
+        appDes:'主题描述主题描述主题描述主题描述',
+        labelList,
+    },
+    {
+        key:5,
+        title:'测试title',
+        appDes:'主题描述主题描述主题描述主题描述',
+        labelList,
+    },
+    {
+        key:6,
+        title:'测试title',
+        appDes:'主题描述主题描述主题描述主题描述',
+        labelList,
     }
 ]
 class MainPage extends React.Component{
