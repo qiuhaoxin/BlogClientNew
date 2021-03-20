@@ -8,6 +8,15 @@ const devServerCfg={
     contentBase:path.resolve(__dirname,'../dist'),
     hot:true,
     open:true,
+    host:'localhost',
+    proxy:{
+        '/api':{
+            target:'http://localhost:5001',
+            pathRewrite:{
+                '^/api':''
+            }
+        }
+    }
 }
 
 WebpackDevServer.addDevServerEntrypoints(devWebpackCfg,devServerCfg);

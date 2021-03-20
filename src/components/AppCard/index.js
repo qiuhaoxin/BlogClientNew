@@ -9,10 +9,7 @@ function AppCard({title='Http',labelList,appDes}){
             <span>{title}</span>
         </div>
         <div className={Styles.appDes}>
-            <div>
-                {
-                    appDes
-                }
+            <div dangerouslySetInnerHTML={{__html: appDes}}>
             </div>
              <div>
                 

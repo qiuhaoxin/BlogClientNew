@@ -12,14 +12,16 @@ class RouteApp extends React.Component{
             <Router>
                 <Header />
                 <BGroundImg />
-                <Switch>
-                    <Suspense fallback={<div>loading...</div>}>
-                        {
-                            RouterData.map(item=><Route key={item.path} path={item.path} component={item.component}></Route>)
-                        }
-                    </Suspense>
-                    <Redirect from="/" to="/main"/>
-                </Switch>
+                <div className={Styles.bodyContent}>
+                    <Switch>
+                        <Suspense fallback={<div>loading...</div>}>
+                            {
+                                RouterData.map(item=><Route key={item.path} path={item.path} component={item.component}></Route>)
+                            }
+                        </Suspense>
+                        <Redirect from="/" to="/main"/>
+                    </Switch>
+                </div>
             </Router>
         </div>
     }
