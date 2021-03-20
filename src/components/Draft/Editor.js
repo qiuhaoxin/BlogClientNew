@@ -2,6 +2,7 @@ import React,{createRef} from 'react';
 import {Editor,EditorState,ContentState,Modifier,RichUtils} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
+import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
 
       // Custom overrides for "code" style.
@@ -31,6 +32,7 @@ class BlogEditor extends React.Component{
         }
         this.onChange=(editorState)=>this.setState({editorState});
         this.toggleBlockTypeBtn=this._toggleBlockTypeBtn.bind(this);
+        this.toggleInlineTypeBtn=this._toggleInlineTypeBtn.bind(this);
     }
     _toggleBlockTypeBtn(blockType){
         console.log("blockType is ",blockType);
@@ -38,6 +40,12 @@ class BlogEditor extends React.Component{
             this.state.editorState,
             blockType,
         ));
+    }
+    _toggleInlineTypeBtn(inlineStyle){
+        this.onChange(RichUtils.toggleInlineStyle(
+            this.state.editorState,
+            inlineStyle,
+        ))
     }
     focus=()=>{
         this.editor.current.focus();
@@ -55,6 +63,7 @@ class BlogEditor extends React.Component{
         console.log("className is ",className.split(' '));
         return <div className={Styles.wrapper}>
             <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn}/>
+            <InlineStyleCtls editorState={editorState} onToggle={this.toggleInlineTypeBtn}></InlineStyleCtls>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
                     customStyleMap={styleMap}
@@ -64,7 +73,6 @@ class BlogEditor extends React.Component{
                     onChange={this.onChange} 
                     ref={this.editor} 
                     spellCheck={true}>
-
                 </Editor>
             </div>
         </div>

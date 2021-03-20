@@ -13,17 +13,17 @@ const blockStyleList=[
     {label: 'OL', style: 'ordered-list-item'},
     {label: 'Code Block', style: 'code-block'},
 ]
-const prefixCls="blog-bsc";
 class BlockStyleCtls extends React.PureComponent{
-    
     render(){
         const {editorState,onToggle}=this.props;
         const selection=editorState.getSelection();
         const blockType=editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
         return <div className={Styles.wrapper}>
             {
-                blockStyleList.map(item=><span className={Styles['block_item']} onClick={()=>onToggle(item.style)}  
-                 key={item.label}>{item.label}</span>)
+                blockStyleList.map(item=><span 
+                    className={`${Styles['block_item']} ${Styles[blockType==item.style ? 'active' : null]}`} 
+                    onClick={()=>onToggle(item.style)}  
+                    key={item.label}>{item.label}</span>)
             }
         </div>
     }
