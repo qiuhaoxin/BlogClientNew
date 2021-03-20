@@ -1,9 +1,10 @@
 import React,{createRef} from 'react';
-import {Editor,EditorState,ContentState,Modifier,RichUtils} from 'draft-js';
+import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
+import Upload from './Upload';
 
       // Custom overrides for "code" style.
       const styleMap = {
@@ -23,6 +24,28 @@ import 'draft-js/dist/Draft.css';
           default: return null;
         }
       }
+function Image({src}){
+    return <img src={src}/>
+}
+const Media = (props) => {
+    console.log("sdfsdfsdfsdfsdf is ",props.block);
+    const entity = props.contentState.getEntity(
+      props.block.getEntityAt(0)
+    );
+    const {src} = entity.getData();
+    const type = entity.getType();
+    console.log("mediasdfsdfs  Meida",type+" and src is "+src);
+    let media;
+    if (type === 'audio') {
+    //   media = <Audio src={src} />;
+    } else if (type === 'image') {
+      media = <Image src={src} />;
+    } else if (type === 'video') {
+    //   media = <Video src={src} />;
+    }
+
+    return media;
+  };
 class BlogEditor extends React.Component{
     constructor(props){
         super(props);
@@ -33,6 +56,8 @@ class BlogEditor extends React.Component{
         this.onChange=(editorState)=>this.setState({editorState});
         this.toggleBlockTypeBtn=this._toggleBlockTypeBtn.bind(this);
         this.toggleInlineTypeBtn=this._toggleInlineTypeBtn.bind(this);
+        this.renderBlockFn=this._renderBlockFn.bind(this);
+        this.handleUploadCB=this._handleUploadCB.bind(this);
     }
     _toggleBlockTypeBtn(blockType){
         console.log("blockType is ",blockType);
@@ -47,8 +72,46 @@ class BlogEditor extends React.Component{
             inlineStyle,
         ))
     }
+    _renderBlockFn(block){
+       const type=block.getType();
+       if(type=='atomic'){
+         return {
+             component:Media,
+             editable:false,
+         }
+       }
+       return null;
+    }
     focus=()=>{
         this.editor.current.focus();
+    }
+    _handleUploadCB(info){
+        const {errcode,imgPath}=info;
+        if(errcode==1){
+           const {editorState}=this.state;
+           const contentState=editorState.getCurrentContent();
+           const contentStateWithEntity=contentState.createEntity(
+               'image',
+               'IMMUTABLE',
+               {src:imgPath}
+           )
+           const entityKey=contentStateWithEntity.getLastCreatedEntityKey();
+           const newEditorState=EditorState.set(
+               editorState,
+               {currentContent:contentStateWithEntity}
+           );
+           this.setState({
+               editorState:AtomicBlockUtils.insertAtomicBlock(
+                   newEditorState,
+                   entityKey,
+                   ' ',//这里是空格而非空字符串
+               )
+           },()=>{
+               setTimeout(()=>this.focus,0)
+           })
+        }else{
+
+        }
     }
     render(){
         const {editorState}=this.state;
@@ -64,8 +127,10 @@ class BlogEditor extends React.Component{
         return <div className={Styles.wrapper}>
             <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn}/>
             <InlineStyleCtls editorState={editorState} onToggle={this.toggleInlineTypeBtn}></InlineStyleCtls>
+            <Upload onCallback={this.handleUploadCB}></Upload>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
+                    blockRendererFn={this.renderBlockFn}
                     customStyleMap={styleMap}
                     blockStyleFn={getBlockStyle}
                     style={{height:'400px'}} 
