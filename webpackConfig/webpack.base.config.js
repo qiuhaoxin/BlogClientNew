@@ -49,6 +49,9 @@ module.exports={
             },{
                  test:/\.(png|jpe?g|git)$/,
                  type:'asset/resource',
+            },{
+                test:/\.(eot|ttf|woff|svg)$/,
+                type:'asset/resource'
             }
         ]
     },

@@ -69,9 +69,12 @@ class Publish extends React.Component{
           };
         return <div className={Styles.wrapper}>
             <div className={Styles.upload}>
-                <RcUpload style={{width:'100%',height:'50px'}} {...uploadProps}>
+                <RcUpload style={{width:'100%',height:'50px',outline:'none'}} {...uploadProps}>
                     <img style={{display:this.state.imgSrc ? 'block' : 'none',width:'320px',height:'80px'}} src={this.state.imgSrc}/>
-                    <span>上传图片</span>
+                    <span className={Styles.photo}>
+                       <i className={'icon-photo' } style={{fontSize:40}}></i>
+                    </span>
+                    
                 </RcUpload>
             </div>
             <div className={Styles.topic}>

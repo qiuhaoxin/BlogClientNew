@@ -9,8 +9,27 @@
     width: 100%;
     height: 160px;
     border-radius: 8px;
-    background-color: gray;
+    background-color: #f6f6f6;
     flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .photo {
+      display: inline-flex;
+      width: 100%;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        &::before {
+          content: '选择题图';
+          position: absolute;
+          top: 44px;
+          left: 50%;
+          margin-left: -32px;
+        }
+      }
+    }
   }
   & .topic {
     margin-top: 10px;

@@ -9,44 +9,6 @@ const labelList=[
     {key:'webpack',name:'webpack'},
     {key:'gch',name:'工程化'}
 ];
-const appList=[
-    {
-        key:1,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    },
-    {
-        key:2,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    },
-    {
-        key:3,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    },
-    {
-        key:4,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    },
-    {
-        key:5,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    },
-    {
-        key:6,
-        title:'测试title',
-        appDes:'主题描述主题描述主题描述主题描述',
-        labelList,
-    }
-]
 class MainPage extends React.Component{
     
     componentDidMount(){
@@ -65,7 +27,9 @@ class MainPage extends React.Component{
        return <div className={Styles.wrapper}>
           <div className={Styles.innerWrapper}>
               {
-                  articleList.map(item=><AppCard key={item.fid} title={item.title} labelList={[]} appDes={item.fbody}></AppCard>)
+                  articleList.map(item=><AppCard key={item.fid} title={item.title} 
+                    userName={item.userName} labelList={[]} appDes={item.fbody}
+                    timeStamp={item.ftimestamp}></AppCard>)
               }
           </div>
        </div>
