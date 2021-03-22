@@ -23,12 +23,11 @@ class MainPage extends React.Component{
     }
     render(){
         const {articleList}=this.props;
-        console.log("article skdfls is ",articleList);
        return <div className={Styles.wrapper}>
           <div className={Styles.innerWrapper}>
               {
                   articleList.map(item=><AppCard key={item.fid} title={item.title} 
-                    userName={item.userName} labelList={[]} appDes={item.fbody}
+                    userName={item.userName} labelList={[]} appDes={item.fbody} articleId={item.fid}
                     timeStamp={item.ftimestamp}></AppCard>)
               }
           </div>
