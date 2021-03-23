@@ -64,9 +64,8 @@ function* fetchArticleById(payload){
    if(errcode==1){
       yield put({
          type:Actions.SYNC_ARTICLE,
-         payload:{
-            subId:data[0].fsubId,
-         }
+         payload:data[0],
+         
       })
    }
    callback && callback(result);

@@ -1,9 +1,46 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Actions from '../../actions';
-import {Editor,EditorState,RichUtils,convertFromHTML,ContentState} from 'draft-js';
+import {Editor,EditorState,RichUtils,convertFromHTML,ContentState,convertFromRaw} from 'draft-js';
 import Styles from './article.less';
 import 'draft-js/dist/Draft.css';
+
+
+const styleMap = {
+    CODE: {
+      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+      fontSize: 16,
+      padding: 2,
+    },
+  };
+function getBlockStyle(block) {
+    switch (block.getType()) {
+      case 'blockquote': return Styles['RichEditor-blockquote'];
+      case 'code-block': return Styles['public-DraftStyleDefault-pre']
+      default: return null;
+    }
+  }
+  function Image({src}){
+    return <img src={src}/>
+}
+const Media = (props) => {
+    const entity = props.contentState.getEntity(
+      props.block.getEntityAt(0)
+    );
+    const {src} = entity.getData();
+    const type = entity.getType();
+    let media;
+    if (type === 'audio') {
+    //   media = <Audio src={src} />;
+    } else if (type === 'image') {
+      media = <Image src={src} />;
+    } else if (type === 'video') {
+    //   media = <Video src={src} />;
+    }
+
+    return media;
+  };
 class Article extends React.Component{
      constructor(props){
          super(props);
@@ -12,6 +49,17 @@ class Article extends React.Component{
              editorState:EditorState.createEmpty(),
          }
          this.fetchArticle=this._fetchArticle.bind(this);
+         this.renderBlockFn=this._renderBlockFn.bind(this);
+     }
+     _renderBlockFn(block){
+        const type=block.getType();
+        if(type=='atomic'){
+          return {
+              component:Media,
+              editable:false,
+          }
+        }
+        return null;
      }
      componentDidMount(){
          this.fetchArticle();
@@ -27,7 +75,6 @@ class Article extends React.Component{
      _fetchArticle(){
          const {dispatch}=this.props;
          const {articleId}=this.props.match.params;
-         console.log("articleId is ",articleId);
          const _this=this;
          dispatch({
              type:Actions.GET_ARTICLE,
@@ -39,31 +86,37 @@ class Article extends React.Component{
                   if(errcode==1){
                       const article=data[0];
                       const {ftitle,fbody}=article;
-                      const blocksFromHTML=convertFromHTML(fbody);
-                      const state = ContentState.createFromBlockArray(
-                        blocksFromHTML.contentBlocks,
-                        blocksFromHTML.entityMap,
-                      );
+                    //   const blocksFromHTML=convertFromHTML(fbody);
+                      const afterConvert=convertFromRaw(JSON.parse(fbody));
                       _this.setState({
-                          editorState:EditorState.createWithContent(
-                              state
-                          )
+                          editorState:EditorState.createWithContent(afterConvert)
                       })
-
                   }
              }
          })
      }
      render(){
          const {editorState}=this.state;
+         const {articleData:{ftitle}}=this.props;
          return <div className={Styles.wrapper}>
-             <Editor readOnly={true} editorState={editorState} ref={this.editor} onChange={this.handleEditorChange}></Editor>
+             <div className={Styles.title}>{ftitle}</div>
+            <div className={Styles.innerWrapper}>
+                
+                <Editor                     
+                    blockRendererFn={this.renderBlockFn}
+                    customStyleMap={styleMap}
+                    blockStyleFn={getBlockStyle} 
+                    readOnly={true} 
+                    editorState={editorState} 
+                    ref={this.editor} 
+                    onChange={this.handleEditorChange}></Editor>
+            </div>
          </div>
      }
 }
 
 export default connect((state,initProps)=>{
     return {
-
+        articleData:state.Main.article,
     }
 })(Article);

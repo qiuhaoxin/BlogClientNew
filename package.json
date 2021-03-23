@@ -28,8 +28,11 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
+    "draft-convert": "^2.1.10",
     "draft-js": "^0.11.7",
     "lodash.throttle": "^4.1.1",
+    "rc-dialog": "^8.5.2",
+    "rc-select": "^12.1.7",
     "rc-upload": "^4.2.0-alpha.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

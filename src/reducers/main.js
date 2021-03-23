@@ -1,6 +1,7 @@
 const initialState={
     articleList:[],
     isLoading:false,
+    article:{}
 }
 import Actions from '../actions'
 
@@ -12,6 +13,12 @@ export default function(state=initialState,action){
             return {
                 ...state,
                 articleList:payload,
+            }
+        break;
+        case Actions.SYNC_ARTICLE:
+            return {
+                ...state,
+                article:payload
             }
         break;
         default:

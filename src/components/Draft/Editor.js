@@ -1,10 +1,11 @@
 import React,{createRef} from 'react';
-import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils} from 'draft-js';
+import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw,} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
 import Upload from './Upload';
+import {convertToHTML} from 'draft-convert';
 
       // Custom overrides for "code" style.
       const styleMap = {
@@ -17,7 +18,6 @@ import Upload from './Upload';
       };
 
       function getBlockStyle(block) {
-          console.log("getBlockStyle is ",block.getType());
         switch (block.getType()) {
           case 'blockquote': return Styles['RichEditor-blockquote'];
           case 'code-block': return Styles['public-DraftStyleDefault-pre']
@@ -28,13 +28,11 @@ function Image({src}){
     return <img src={src}/>
 }
 const Media = (props) => {
-    console.log("sdfsdfsdfsdfsdf is ",props.block);
     const entity = props.contentState.getEntity(
       props.block.getEntityAt(0)
     );
     const {src} = entity.getData();
     const type = entity.getType();
-    console.log("mediasdfsdfs  Meida",type+" and src is "+src);
     let media;
     if (type === 'audio') {
     //   media = <Audio src={src} />;
@@ -85,9 +83,15 @@ class BlogEditor extends React.Component{
     focus=()=>{
         this.editor.current.focus();
     }
+    getHTMLFromRaw(){
+        const {editorState}=this.state;
+        const result=convertToRaw(editorState.getCurrentContent());
+        console.log("get html from raw result is ",result);
+        return result;
+    }
     _handleUploadCB(info){
-        const {errcode,imgPath}=info;
-        if(errcode==1){
+        const {code,imgPath}=info;
+        if(code==0){
            const {editorState}=this.state;
            const contentState=editorState.getCurrentContent();
            const contentStateWithEntity=contentState.createEntity(
@@ -123,7 +127,6 @@ class BlogEditor extends React.Component{
         //     className += ' RichEditor-hidePlaceholder';
         //   }
         }
-        console.log("className is ",className.split(' '));
         return <div className={Styles.wrapper}>
             <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn}/>
             <InlineStyleCtls editorState={editorState} onToggle={this.toggleInlineTypeBtn}></InlineStyleCtls>
