@@ -85,10 +85,42 @@
     flex-grow: 1;
   }
 
-  & .labels {
-    & input {
-      border: none;
-      outline: none;
-    }
+
+}
+
+.labels {
+  width: 100%;
+  margin-left:10px;
+  min-height: 40px;
+  border:1px solid #eee;
+  border-radius: 4px;
+  & > input {
+    border: none;
+    outline: none;
+    width:100px;
+    height:40px;
+    padding-left:10px;
+  }
+}
+.footer{
+  width:100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top:4px;
+  & .save,
+  & .cancel{
+      display: inline-block;
+      padding:4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+  & .save{
+    background-color: #06f;
+    color:#fff;
+    margin-right: 10px;
+  }
+  & .cancel{
+    border:1px solid #eee;
   }
 }

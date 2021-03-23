@@ -9,10 +9,18 @@ import 'rc-dialog/assets/index.css';
 import Select,{Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 import Label from '../../components/Label';
+import LabelInput from '../../components/LabelInput';
 
 const testList=[
     {fid:1,fname:'qiuhaoxin'}
 ]
+
+function Footer(props){
+    return <div className={Styles.footer}>
+        <span className={Styles.save} onClick={props.onSave}>保存</span>
+        <span className={Styles.cancel} onClick={props.onCancel}>取消</span>
+    </div>
+}
 class Publish extends React.Component{
     constructor(props){
         super(props);
@@ -109,6 +117,15 @@ class Publish extends React.Component{
         //     })
         // }
     }
+    handleSave=()=>{
+        console.log("handleSave");
+    }
+    handleCancel=()=>{
+        console.log("handleCancel");
+        this.setState({
+            dialogVisible:false,
+        })
+    }
     render(){
         const {rect,dialogVisible}=this.state;
         const {domainList}=this.props;
@@ -136,21 +153,17 @@ class Publish extends React.Component{
             <div className={Styles.editor}>
               <BlogEditor ref={this.blogEditor}></BlogEditor>
             </div>
-            <Dialog onClose={this.handleCloseDialog} animation="zoom" visible={dialogVisible} title="发布文章">
-                  <p>为了快速检索到您的文章，请配置主题和标签</p>
-                  <label style={{marginTop:40}}>请选择主题：</label>
+            <Dialog footer={<Footer onSave={this.handleSave} onCancel={this.handleCancel}></Footer>} onClose={this.handleCloseDialog} 
+            animation="zoom" visible={dialogVisible} title="发布文章">
+                  <p style={{color:'#d9d9d9',marginBottom:20}}>为了快速检索到您的文章，请配置主题和标签</p>
+                  <p style={{margin:10}}>请选择主题：</p>
                   <div className={Styles.labelList}>
                       {
-                          domainList.map(item=><Label labelText={item.fname} className={Styles.label} key={item.fid}></Label>)
+                          domainList.map(item=><Label mode={1} labelText={item.fname} className={Styles.label} key={item.fid}></Label>)
                       }
                   </div>
-                  <label>请填写文章标签(可多个，按enter)</label>
-                  <div className={Styles.labels}>
-                      <div>
-                         
-                      </div>
-                      <input placeholder="请输入"/>
-                  </div>
+                  <p style={{margin:10}}>请填写文章标签(可多个，按enter)</p>
+                  <LabelInput></LabelInput>
             </Dialog>
         </div>
     }
