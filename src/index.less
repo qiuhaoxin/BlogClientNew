@@ -44,6 +44,42 @@ ul {
   -moz-osx-font-smoothing: grayscale;
 }
 :global {
+  .icon-bold:before {
+    content: '\e907';
+  }
+  .icon-cancel_link:before {
+    content: '\e908';
+  }
+  .icon-code:before {
+    content: '\e909';
+  }
+  .icon-font_color:before {
+    content: '\e90a';
+  }
+  .icon-italics:before {
+    content: '\e90b';
+  }
+  .icon-left_indent:before {
+    content: '\e90c';
+  }
+  .icon-link:before {
+    content: '\e90d';
+  }
+  .icon-ol:before {
+    content: '\e90e';
+  }
+  .icon-quote:before {
+    content: '\e90f';
+  }
+  .icon-right_indent:before {
+    content: '\e910';
+  }
+  .icon-ul:before {
+    content: '\e911';
+  }
+  .icon-under_line:before {
+    content: '\e912';
+  }
   .icon-calendar:before {
     content: '\e905';
   }
@@ -70,4 +106,12 @@ ul {
 :global([class^='icon-']) {
   font-size: 20px;
   color: #999;
+}
+
+:global(.triangle) {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000;
 }

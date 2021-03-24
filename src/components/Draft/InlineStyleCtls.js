@@ -13,6 +13,15 @@ class InlineStyleCtls extends React.Component{
         const currentInlineStyle=editorState.getCurrentInlineStyle();
         
         return <div className={Styles.wrapper}>
+          <span>
+            <i className="icon-bold"></i>
+          </span>
+          <span>
+            <i className="icon-italics"></i>
+          </span>
+          <span>
+            <i className="icon-under_line"></i>
+          </span>
            {
                INLINE_STYLES.map(item=><span 
                  className={`${Styles['inline_item']} ${Styles[currentInlineStyle.has(item.style) ? 'active':null]}`} key={item.label} 

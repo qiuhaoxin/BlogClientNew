@@ -1,12 +1,12 @@
 import React,{useState} from 'react';
 import Styles from './index.less';
 import RouterData from '../../common/routerData';
-import {withRouter} from 'react-router-dom';
+import {useHistory,useLocation} from 'react-router-dom';
 const routerData=RouterData.filter(item=>item.showAsNav);
 function Nav(props){
+    const history=useHistory();
     const [curNav,setNav]=useState(routerData[0].path);
     function itemClick(item){
-        const {history}=props;
         setNav(item.path)
         history.push(item.path);
     }
@@ -20,4 +20,4 @@ function Nav(props){
     </ul>
 }
 
-export default withRouter(Nav);
+export default Nav;

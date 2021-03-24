@@ -65,6 +65,7 @@ class BlogEditor extends React.Component{
         ));
     }
     _toggleInlineTypeBtn(inlineStyle){
+        console.log("inlineStyle is ",inlineStyle);
         this.onChange(RichUtils.toggleInlineStyle(
             this.state.editorState,
             inlineStyle,
