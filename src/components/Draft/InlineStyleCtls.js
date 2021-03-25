@@ -13,20 +13,20 @@ class InlineStyleCtls extends React.Component{
         const currentInlineStyle=editorState.getCurrentInlineStyle();
         
         return <div className={Styles.wrapper}>
-          <span>
+          <span onClick={()=>onToggle('BOLD')}>
             <i className="icon-bold"></i>
           </span>
-          <span>
+          <span onClick={()=>onToggle('Italic')}>
             <i className="icon-italics"></i>
           </span>
-          <span>
+          <span onClick={()=>onToggle('UNDERLINE')}>
             <i className="icon-under_line"></i>
           </span>
-           {
+           {/* {
                INLINE_STYLES.map(item=><span 
                  className={`${Styles['inline_item']} ${Styles[currentInlineStyle.has(item.style) ? 'active':null]}`} key={item.label} 
                  onClick={()=>onToggle(item.style)}>{item.label}</span>)
-           }
+           } */}
         </div>
     }
 }

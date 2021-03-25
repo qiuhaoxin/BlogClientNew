@@ -3,6 +3,7 @@ import Styles from './BlockStyleCtls.less';
 import Normal from './Controlls/Normal';
 import Heading from './Controlls/Headings';
 import FontSize from './Controlls/FontSize';
+import LineHeight from './Controlls/LineHeight';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -12,7 +13,12 @@ const blockStyleList=[
 const lineHeightList=[
     {label:''}
 ]
+
 class BlockStyleCtls extends React.PureComponent{
+    constructor(props){
+       super(props);
+    //    this.handleFontSizeClick=this._handleFontSizeClick.bind(this);
+    }
     render(){
         const {editorState,onToggle}=this.props;
         const selection=editorState.getSelection();
@@ -21,8 +27,11 @@ class BlockStyleCtls extends React.PureComponent{
             <Normal showText='常规'>
                 <Heading onToggle={onToggle}/>
             </Normal>
-            <Normal showText="字号">
-                <FontSize onToggle={onToggle}></FontSize>
+            <Normal style={{marginLeft:20}} showText="字号">
+                <FontSize editorState={this.props.editorState} onToggle={this.props.onToggleOtherStyle}></FontSize>
+            </Normal>
+            <Normal style={{marginLeft:20}} showText="行高">
+                <LineHeight editorState={this.props.editorState} onToggle={this.props.onToggleOtherStyle}/>
             </Normal>
             <span onClick={()=>onToggle('blockquote')} style={{paddingLeft:20}}>
                 <i className="icon-quote"></i>

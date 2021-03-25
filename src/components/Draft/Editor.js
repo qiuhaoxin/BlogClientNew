@@ -1,12 +1,21 @@
 import React,{createRef} from 'react';
-import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw,} from 'draft-js';
+import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw, CharacterMetadata,} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
 import Upload from './Upload';
+
 import {convertToHTML} from 'draft-convert';
 
+function getCustomStyleFn(styleSet,block){
+     let output={};
+     styleSet.forEach(style=>{
+         const inlineStyle=style.split('-')[1];
+         output.fontSize=inlineStyle + 'px';
+     })
+     return output;
+}
       // Custom overrides for "code" style.
       const styleMap = {
         CODE: {
@@ -118,6 +127,79 @@ class BlogEditor extends React.Component{
 
         }
     }
+    changeCharacterMeta(characterMetaData,style){
+        return characterMetaData.toJS().style.reduce((characterMetaData,characterStyle)=>{
+            if(characterStyle.indexOf(prefix)===0 && characterStyle!=style){
+                CharacterMetadata.removeStyle(characterMetaData,characterStyle);
+            }else{
+                return characterMetaData
+            }
+        },characterMetaData);
+    }
+    handleOtherStyles=(prefix="",style)=>{
+        console.log("prefix is ",prefix+" and style is ",style);
+       const _this=this;
+       let nextEditorState=this.state.editorState;
+       style=prefix + style.toUpperCase();
+       const {editorState}=this.state;
+       const contentState=editorState.getCurrentContent();
+       const selectionState=editorState.getSelection();
+       const startKey=selectionState.getStartKey();
+       const startOffset=selectionState.getStartOffset();
+       const endKey=selectionState.getEndKey();
+       const endOffset=selectionState.getEndOffset();
+       const blockMap=contentState.getBlockMap();
+
+       const nextContentBlocks=blockMap.map(block=>{
+           let nextCharacterList=null;
+           const blockKey=block.getKey();
+           const characterList=block.getCharacterList();
+           if(startKey==blockKey && startKey==endKey){
+               nextCharacterList=characterList.map((characterMetaData,index)=>{
+                   if(index>=startOffset && index<=endOffset){
+                        return _this.changeCharacterMeta(characterMetaData,style);
+                   }
+                   return characterMetaData;
+               })
+           }else if(startKey==blockKey){
+               nextCharacterList=characterList.map((characterMetaData,index)=>{
+                    if(index >=startOffset){
+                        return _this.changeCharacterMeta(characterMetaData,style);
+                }
+                return characterMetaData;
+               })
+
+           }else if(blockKey==endKey){
+               nextCharacterList=characterList.map((characterMetaData,index)=>{
+                if(index < endOffset){
+                    return _this.changeCharacterMeta(characterMetaData,style);
+                  }
+                  return characterMetaData;
+               })
+
+           }else{
+            nextCharacterList=characterList.map((characterMetaData,index)=>{
+                return _this.changeCharacterMeta(characterMetaData,style);
+             })
+           }
+           return block.merge({
+               "characterList":nextCharacterList,
+           })
+       })
+       const newContentState=contentState.merge({
+           blockMap:nextContentBlocks,
+           selectionBefore:selectionState,
+           selectionAfter:selectionState,
+       })
+       console.log("newCotnentstate is ",newContentState);
+       nextEditorState=EditorState.push(editorState,newContentState,"update-selection-character-list");//change-inline-style update-selection-character-list
+       nextEditorState=RichUtils.toggleInlineStyle(nextEditorState,style);
+    //    this.onChange(nextEditorState);
+       this.setState({
+           editorState:nextEditorState,
+       })
+       
+    }
     render(){
         const {editorState}=this.state;
         let className = 'RichEditor-editor';
@@ -129,11 +211,12 @@ class BlogEditor extends React.Component{
         //   }
         }
         return <div className={Styles.wrapper}>
-            <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn}/>
+            <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn} onToggleOtherStyle={this.handleOtherStyles}/>
             <InlineStyleCtls editorState={editorState} onToggle={this.toggleInlineTypeBtn}></InlineStyleCtls>
             <Upload onCallback={this.handleUploadCB}></Upload>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
+                    customStyleFn={getCustomStyleFn}
                     blockRendererFn={this.renderBlockFn}
                     customStyleMap={styleMap}
                     blockStyleFn={getBlockStyle}
