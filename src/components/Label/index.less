@@ -4,6 +4,35 @@
   color: #fff;
   font-size: 12px;
   border-radius: 12px;
-  margin:4px 10px;
+  margin:4px 20px 4px 20px ;
   display: inline-block;
+  & .del{
+    width:13px;
+    height: 13px;
+    background-color: #555;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    left:4px;
+    transform: rotate(45deg) scale(0);
+    
+    &::before{
+      content: '';
+      position: absolute;
+      width:5px;
+      height: 1px;
+      top:6px;
+      left:4px;
+      background-color: #fff;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      width:1px;
+      height: 5px;
+      top:4px;
+      left:6px;
+      background: #fff;
+    }
+  }
 }
