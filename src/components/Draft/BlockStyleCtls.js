@@ -46,6 +46,18 @@ class BlockStyleCtls extends React.PureComponent{
             <span onClick={()=>onToggle('ordered-list-item')} style={{paddingLeft:20}}>
                 <i className="icon-ol"></i>
             </span>
+            <span style={{paddingLeft:20}}>
+                <i className="icon-right_indent"></i>
+            </span>
+            <span style={{paddingLeft:20}}>
+                <i className="icon-left_indent"></i>
+            </span>
+            <span>
+                <i className="icon-link"></i>
+            </span>
+            <span>
+                <i className="icon-cancel_link"></i>
+            </span>
             {/* {
                 blockStyleList.map(item=><span 
                     className={`${Styles['block_item']} ${Styles[blockType==item.style ? 'active' : null]}`} 

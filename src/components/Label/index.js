@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import Styles from './index.less';
 
 //mode 0:纯展示  1:可以勾选
-function Label({labelText='测试',canDel=false,mode=0,style,checked=false}){
+function Label({labelText='测试',canDel=false,mode=0,labelKey,onLabelDel,style,checked=false}){
     const [isChecked,setChecked]=useState(checked);
     function handleLabelClick(){
         if(mode==0)return;
@@ -12,6 +12,9 @@ function Label({labelText='测试',canDel=false,mode=0,style,checked=false}){
             setChecked(true);
         }
        
+    }
+    function handleDelLabel(){
+         onLabelDel && onLabelDel(labelKey);
     }
     let styleObj={
         ...style,
@@ -28,7 +31,7 @@ function Label({labelText='测试',canDel=false,mode=0,style,checked=false}){
     return <span style={styleObj} className={Styles.wrapper} 
     onClick={handleLabelClick}>
          {labelText}
-         <span className={Styles.del} style={{}}></span>
+         <span className={Styles.del} onClick={handleDelLabel} style={{display:canDel?'inline-block':'none'}}></span>
     </span>
 }
 

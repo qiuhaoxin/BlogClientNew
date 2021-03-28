@@ -6,6 +6,7 @@
   border-radius: 12px;
   margin:4px 20px 4px 20px ;
   display: inline-block;
+  align-items: center;
   & .del{
     width:13px;
     height: 13px;
@@ -13,9 +14,10 @@
     border-radius: 50%;
     position: relative;
     display: inline-block;
+    top:2px;
     left:4px;
-    transform: rotate(45deg) scale(0);
-    
+    transform: rotate(45deg);
+    cursor: pointer;
     &::before{
       content: '';
       position: absolute;
