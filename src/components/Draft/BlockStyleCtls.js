@@ -23,9 +23,10 @@ class BlockStyleCtls extends React.PureComponent{
         const {editorState,onToggle}=this.props;
         const selection=editorState.getSelection();
         const blockType=editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
+        console.log('blockType is ',blockType);
         return <div className={Styles.wrapper}>
             <Normal showText='常规'>
-                <Heading onToggle={onToggle}/>
+                <Heading curBlockType={blockType} onToggle={onToggle}/>
             </Normal>
             <Normal style={{marginLeft:20}} showText="字号">
                 <FontSize editorState={this.props.editorState} onToggle={this.props.onToggleOtherStyle}></FontSize>
@@ -44,6 +45,18 @@ class BlockStyleCtls extends React.PureComponent{
             </span>
             <span onClick={()=>onToggle('ordered-list-item')} style={{paddingLeft:20,cursor:'pointer'}}>
                 <i className="icon-ol"></i>
+            </span>
+            <span style={{paddingLeft:20}}>
+                <i className="icon-right_indent"></i>
+            </span>
+            <span style={{paddingLeft:20}}>
+                <i className="icon-left_indent"></i>
+            </span>
+            <span>
+                <i className="icon-link"></i>
+            </span>
+            <span>
+                <i className="icon-cancel_link"></i>
             </span>
             {/* {
                 blockStyleList.map(item=><span 

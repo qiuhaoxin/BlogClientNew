@@ -4,6 +4,37 @@
   color: #fff;
   font-size: 12px;
   border-radius: 12px;
-  margin:4px 10px;
+  margin:4px 20px 4px 20px ;
   display: inline-block;
+  align-items: center;
+  & .del{
+    width:13px;
+    height: 13px;
+    background-color: #555;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    top:2px;
+    left:4px;
+    transform: rotate(45deg);
+    cursor: pointer;
+    &::before{
+      content: '';
+      position: absolute;
+      width:5px;
+      height: 1px;
+      top:6px;
+      left:4px;
+      background-color: #fff;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      width:1px;
+      height: 5px;
+      top:4px;
+      left:6px;
+      background: #fff;
+    }
+  }
 }

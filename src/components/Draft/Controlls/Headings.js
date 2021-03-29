@@ -9,10 +9,12 @@ const titleList=[
     {label: 'H5', name:'h5',style: 'header-five'},
     {label: 'H6', name:'h6',style: 'header-six'},
 ];
-function Heading({onToggle}){
+function Heading({onToggle,curBlockType}){
     return <ul>
     {
-        titleList.map(item=><li className={Styles.titleItem} key={item.label} onClick={()=>onToggle(item.style)}>
+        titleList.map(item=><li 
+            className={`${Styles['titleItem']} ${Styles[item.style==curBlockType ? 'active' : '']}`} 
+        key={item.label} onClick={()=>onToggle(item.style)}>
             {
                 React.createElement(item.name,{},item.name)
             }

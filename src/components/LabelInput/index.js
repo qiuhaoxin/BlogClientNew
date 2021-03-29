@@ -20,10 +20,23 @@ function LabelInput(){
             setLabelList(tempList);
         }
     }
-    return <div className={Styles.wrapper}>
-        <div>
+    function handleLabelDel(labelKey){
+        const tempLabelList=labelList.slice();
+
+        
+        const idx=tempLabelList.findIndex(item=>item.id==labelKey);
+        tempLabelList.splice(idx,1);
+        setLabelList(tempLabelList);
+    }
+    function handleFocus(){
+        if(inputRef.current){
+            inputRef.current.focus();
+        }
+    }
+    return <div className={Styles.wrapper} onClick={handleFocus}>
+        <div className={Styles.labelList}>
             {
-               labelList.map(item=><Label key={item.id} labelText={item.name} mode={0}></Label>)
+               labelList.map(item=><Label onLabelDel={handleLabelDel} canDel={true} labelKey={item.id} key={item.id} labelText={item.name} mode={0}></Label>)
             }
         </div>
         <input ref={inputRef} placeholder="请输入" onKeyDown={handleMouseDown}/>

@@ -8,35 +8,9 @@
   position: relative;
   color: #6a6f7b;
   font-size: 16px;
-  &:hover {
+  &:hover{
     background: #eee;
     border-radius: 2px;
-    &:before {
-      content: '标题';
-      position: absolute;
-      bottom: -34px;
-      left: 50%;
-      margin-left: -22px;
-      width: 40px;
-      height: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 2px;
-      color: #fff;
-      text-align: center;
-      padding: 2px;
-      font-size: 14px;
-    }
-    &:after {
-      content: '';
-      position: absolute;
-      left: 40%;
-      bottom: -10px;
-      width: 0;
-      height: 0;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-bottom: 6px solid #000;
-    }
   }
   & .content {
     transform: scale(0);
@@ -44,8 +18,38 @@
     left: -40px;
     top: 42px;
     width: 160px;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgb(0, 0, 0);
     border-radius: 4px;
     transition: transform 0.2s ease-in;
+  }
+}
+
+.tipWrapper{
+
+  &:before {
+    content: '标题';
+    position: absolute;
+    bottom: -34px;
+    left: 50%;
+    margin-left: -22px;
+    width: 40px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
+    color: #fff;
+    text-align: center;
+    padding: 2px;
+    font-size: 14px;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    left: 40%;
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #000;
   }
 }
