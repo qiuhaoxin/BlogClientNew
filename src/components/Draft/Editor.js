@@ -93,6 +93,9 @@ class BlogEditor extends React.Component{
     focus=()=>{
         this.editor.current.focus();
     }
+    _handleKeyCommand(command){
+        console.log("command is ",command);
+    }
     getHTMLFromRaw(){
         const {editorState}=this.state;
         const result=convertToRaw(editorState.getCurrentContent());
@@ -225,6 +228,7 @@ class BlogEditor extends React.Component{
                     onChange={this.onChange} 
                     ref={this.editor} 
                     spellCheck={true}>
+                    handleKeyCommand={this._handleKeyCommand}
                 </Editor>
             </div>
         </div>

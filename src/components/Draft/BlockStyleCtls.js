@@ -33,16 +33,16 @@ class BlockStyleCtls extends React.PureComponent{
             <Normal style={{marginLeft:20}} showText="行高">
                 <LineHeight editorState={this.props.editorState} onToggle={this.props.onToggleOtherStyle}/>
             </Normal>
-            <span onClick={()=>onToggle('blockquote')} style={{paddingLeft:20}}>
+            <span onClick={()=>onToggle('blockquote')} style={{paddingLeft:20,cursor:'pointer'}}>
                 <i className="icon-quote"></i>
             </span>
-            <span onClick={()=>onToggle('code-block')} style={{paddingLeft:20}}>
+            <span onClick={()=>onToggle('code-block')} style={{paddingLeft:20,cursor:'pointer'}}>
                 <i className="icon-code"></i>
             </span>
-            <span onClick={()=>onToggle('unordered-list-item')} style={{paddingLeft:20}}>
+            <span onClick={()=>onToggle('unordered-list-item')} style={{paddingLeft:20,cursor:'pointer'}}>
                 <i className="icon-ul"></i>
             </span>
-            <span onClick={()=>onToggle('ordered-list-item')} style={{paddingLeft:20}}>
+            <span onClick={()=>onToggle('ordered-list-item')} style={{paddingLeft:20,cursor:'pointer'}}>
                 <i className="icon-ol"></i>
             </span>
             {/* {
