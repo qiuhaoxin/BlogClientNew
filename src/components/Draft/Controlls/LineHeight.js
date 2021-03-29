@@ -1,5 +1,6 @@
 import React from 'react';
 import Styles from './lineheight.less';
+import {toggleLineHeightStyles} from '../../../utils/EidtorUtils';
 const lineHeightList=[
     1,
     1.2,
@@ -11,7 +12,11 @@ const lineHeightList=[
     4
 ]
 function LineHeight({onToggle,editorState}){
-    let currentFontSize=null
+    let currentFontSize=null;
+    function handleClick(lineHeight){
+        const nextEditorState=toggleLineHeightStyles({editorState,lineHeight});
+        onToggle && onToggle(nextEditorState);
+    }
     lineHeightList.find(item=>{
         const inlineStyle=editorState.getCurrentInlineStyle();
         const flag=inlineStyle.has(`LINEHEIGHT-${item.label}`);  //FONTSIZE-34
@@ -23,7 +28,7 @@ function LineHeight({onToggle,editorState}){
     })
     return <ul className={Styles.wrapper}>
     {
-        lineHeightList.map(item=><li className={Styles.titleItem} key={item} onClick={()=>onToggle("LINEHEIGHT-",item)}>
+        lineHeightList.map(item=><li className={Styles.titleItem} key={item} onClick={()=>handleClick(item)}>
             {
                 React.createElement('span',{},item)
             }

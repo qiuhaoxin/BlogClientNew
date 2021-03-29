@@ -1,6 +1,6 @@
 import React from 'react';
 import Styles from './fontsize.less';
-
+import {toggleFontSizeStyles} from '../../../utils/EidtorUtils';
 const fontSizeList=[
     {label: '12', name:'12'},
     {label: '14', name:'14'},
@@ -26,9 +26,14 @@ function FontSize({onToggle,editorState}){
         }
         return false;
     })
+    function handleClick(fontSize){
+        console.log("handle fontsize click");
+        const nextEditorState=toggleFontSizeStyles({editorState,fontSize});
+        onToggle && onToggle(nextEditorState);
+    }
     return <ul className={Styles.wrapper}>
     {
-        fontSizeList.map(item=><li className={Styles.titleItem} key={item.label} onClick={()=>onToggle("FONTSIZE-",item.label)}>
+        fontSizeList.map(item=><li className={Styles.titleItem} key={item.label} onClick={()=>handleClick(item.label)}>
             {
                 React.createElement('span',{},item.name)
             }

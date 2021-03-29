@@ -4,6 +4,7 @@ import Normal from './Controlls/Normal';
 import Heading from './Controlls/Headings';
 import FontSize from './Controlls/FontSize';
 import LineHeight from './Controlls/LineHeight';
+import SingleIcon from './Controlls/SingleIcon';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -17,7 +18,6 @@ const lineHeightList=[
 class BlockStyleCtls extends React.PureComponent{
     constructor(props){
        super(props);
-    //    this.handleFontSizeClick=this._handleFontSizeClick.bind(this);
     }
     render(){
         const {editorState,onToggle}=this.props;
@@ -34,18 +34,11 @@ class BlockStyleCtls extends React.PureComponent{
             <Normal style={{marginLeft:20}} showText="行高">
                 <LineHeight editorState={this.props.editorState} onToggle={this.props.onToggleOtherStyle}/>
             </Normal>
-            <span onClick={()=>onToggle('blockquote')} style={{paddingLeft:20,cursor:'pointer'}}>
-                <i className="icon-quote"></i>
-            </span>
-            <span onClick={()=>onToggle('code-block')} style={{paddingLeft:20,cursor:'pointer'}}>
-                <i className="icon-code"></i>
-            </span>
-            <span onClick={()=>onToggle('unordered-list-item')} style={{paddingLeft:20,cursor:'pointer'}}>
-                <i className="icon-ul"></i>
-            </span>
-            <span onClick={()=>onToggle('ordered-list-item')} style={{paddingLeft:20,cursor:'pointer'}}>
-                <i className="icon-ol"></i>
-            </span>
+            <SingleIcon iconName='icon-quote' onToggleClick={()=>onToggle('blockquote')}></SingleIcon>
+            <SingleIcon iconName='icon-code' onToggleClick={()=>onToggle('code-block')}></SingleIcon>
+            <SingleIcon iconName='icon-ul' onToggleClick={()=>onToggle('unordered-list-item')}></SingleIcon>
+            <SingleIcon iconName='icon-ol' onToggleClick={()=>onToggle('ordered-list-item')}></SingleIcon>
+       
             <span style={{paddingLeft:20}}>
                 <i className="icon-right_indent"></i>
             </span>

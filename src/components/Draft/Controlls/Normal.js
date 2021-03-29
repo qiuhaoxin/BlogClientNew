@@ -1,8 +1,7 @@
 import React,{useState,Children,useEffect,useRef} from 'react';
 import Styles from './normal.less';
-
+import DropDown from './DropDown';
 function MouseTip({visible}){
-    console.log('tip visible is ',visible)
     return <div style={{display:visible ? 'block' : 'none'}} 
     className={Styles.tipWrapper}>
 
@@ -14,12 +13,10 @@ function Normal({showText,children,style}){
     const [tipVisible,setTipVisible]=useState(false);
     const contentRef=useRef();
     function handleClick(){
-        console.log();
         setShowChoose(true);
         setWrapperStyle({background:'#eee'})
     }
     function handleMouseEnter(e){
-       console.log("mouse enter")
        if(!showChoose){
         setTipVisible(true);
        }
@@ -59,11 +56,11 @@ function Normal({showText,children,style}){
         onMouseLeave={handleMouseLeave} >{showText}</div>
         <span className="triangle"></span>
         <MouseTip visible={tipVisible}/>
-        <div  style={{transform:showChoose ? `scale(1)` : `scale(0)`}} className={Styles.content}>
+        <DropDown visible={showChoose}>
             {
                 Children.only(children)
             }
-        </div>
+        </DropDown>
     </div>
 }
 

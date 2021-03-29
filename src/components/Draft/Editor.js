@@ -1,18 +1,26 @@
 import React,{createRef} from 'react';
-import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw, CharacterMetadata,} from 'draft-js';
+import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw, CharacterMetadata,getDefaultKeyBinding} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
 import Upload from './Upload';
 
-import {convertToHTML} from 'draft-convert';
-
 function getCustomStyleFn(styleSet,block){
+     console.log("styleSet is ",styleSet);
      let output={};
      styleSet.forEach(style=>{
-         const inlineStyle=style.split('-')[1];
-         output.fontSize=inlineStyle + 'px';
+         console.log("style is ",style);
+         if(style.indexOf('FONTSIZE') > -1){
+            const inlineStyle=style.split('-')[1];
+            output.fontSize=inlineStyle + 'px';
+         }
+         if(style.indexOf('LINEHEIGHT') > -1){ // LINEHEIGHT
+            const lineHeight=style.split('-')[1];
+            console.log("line height is ",lineHeight);
+            output.lineHeight=lineHeight;
+         }
+
      })
      return output;
 }
@@ -65,6 +73,9 @@ class BlogEditor extends React.Component{
         this.toggleInlineTypeBtn=this._toggleInlineTypeBtn.bind(this);
         this.renderBlockFn=this._renderBlockFn.bind(this);
         this.handleUploadCB=this._handleUploadCB.bind(this);
+        this.defineKeyBindingFn=this._keyBindingFn.bind(this);
+        this.handleKeyCommand=this._handleKeyCommand.bind(this);
+        this.handleOtherStyles=this.handleOtherStyles.bind(this);
     }
     _toggleBlockTypeBtn(blockType){
         console.log("blockType is ",blockType);
@@ -74,7 +85,6 @@ class BlogEditor extends React.Component{
         ));
     }
     _toggleInlineTypeBtn(inlineStyle){
-        console.log("inlineStyle is ",inlineStyle);
         this.onChange(RichUtils.toggleInlineStyle(
             this.state.editorState,
             inlineStyle,
@@ -93,14 +103,13 @@ class BlogEditor extends React.Component{
     focus=()=>{
         this.editor.current.focus();
     }
-    _handleKeyCommand(command){
-        console.log("command is ",command);
-    }
-    getHTMLFromRaw(){
-        const {editorState}=this.state;
-        const result=convertToRaw(editorState.getCurrentContent());
-        console.log("get html from raw result is ",result);
-        return result;
+    _handleKeyCommand(command,editorState){
+        var newState = RichUtils.handleKeyCommand(editorState, command);
+        if (newState) {
+          this.onChange(newState);
+          return true;
+        }
+        return false;
     }
     _handleUploadCB(info){
         const {code,imgPath}=info;
@@ -139,7 +148,10 @@ class BlogEditor extends React.Component{
             }
         },characterMetaData);
     }
-    handleOtherStyles=(prefix="",style)=>{
+    handleOtherStyles(nextEditorState){
+       this.onChange(nextEditorState);
+    }
+    handleOtherStyles1=(prefix="",style)=>{
         console.log("prefix is ",prefix+" and style is ",style);
        const _this=this;
        let nextEditorState=this.state.editorState;
@@ -203,6 +215,10 @@ class BlogEditor extends React.Component{
        })
        
     }
+    _keyBindingFn(e){
+        // e.preventDefault();
+        return getDefaultKeyBinding(e);
+    }
     render(){
         const {editorState}=this.state;
         let className = 'RichEditor-editor';
@@ -227,8 +243,9 @@ class BlogEditor extends React.Component{
                     editorState={editorState} 
                     onChange={this.onChange} 
                     ref={this.editor} 
-                    spellCheck={true}>
-                    handleKeyCommand={this._handleKeyCommand}
+                    handleKeyCommand={this.handleKeyCommand}
+                    keyBindingFn={this.defineKeyBindingFn}
+                >
                 </Editor>
             </div>
         </div>
