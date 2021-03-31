@@ -85,14 +85,19 @@ export function toggleLineHeightStyles({editorState,lineHeight}){
     return toggleSelfDefineStyles(editorState,"LINEHEIGHT-",lineHeight);
 }
 
+export function toggleTextIndentStyles({editorState,textIndent=4}){
+    console.log("editor toggle text indent is ",editorState);
+    return toggleSelfDefineStyles(editorState,"TEXTINDENT-",textIndent);
+}
+
 //字间距
 export function toggleLetterSpaceStyles({editorState,letterSpace}){
     return toggleSelfDefineStyles(editorState,"LETTERSPACE-",letterSpace);
 }
 
-export function toggleTextIndentStyles({editorState,textIndent=6}){
-    return toggleSelfDefineStyles(editorState,"TEXTINDENT-",textIndent);
-}
+// export function toggleTextIndentStyles({editorState,textIndent=6}){
+//     return toggleSelfDefineStyles(editorState,"TEXTINDENT-",textIndent);
+// }
 
 export function toggleHeadingStyle(){
 

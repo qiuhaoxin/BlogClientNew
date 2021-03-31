@@ -8,7 +8,8 @@ import LetterSpacePicker from './Controlls/LetterSpace';
 import LineHeightPicker from './Controlls/LineHeight';
 import FontSizePicker from './Controlls/FontSize'
 import SingleIcon from './Controlls/SingleIcon';
-import PairIcon from './Controlls/PairIcon'
+import PairIcon from './Controlls/PairIcon';
+import TextIndentPicker from './Controlls/TextIndent';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -46,10 +47,7 @@ class BlockStyleCtls extends React.PureComponent{
             <SingleIcon blockType={blockType} iconType={'unordered-list-item'} iconName='icon-ul' onToggleClick={()=>onToggle('unordered-list-item')}></SingleIcon>
             <SingleIcon blockType={blockType} iconType={'ordered-list-item'} iconName='icon-ol' onToggleClick={()=>onToggle('ordered-list-item')}></SingleIcon>
             <Divider/>
-            <PairIcon iconArr={[
-                {iconName:'icon-right_indent',iconId:1,iconType:'rightIndent'},
-                {iconName:'icon-left_indent',iconId:2,iconType:'leftIndent'}
-            ]} onToggleClick={onToggleOtherStyle} iconStyle={{fontSize:18}} />
+            <TextIndentPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></TextIndentPicker>
             <Divider />
             <PairIcon iconArr={
                 [

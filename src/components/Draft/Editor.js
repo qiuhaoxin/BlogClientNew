@@ -25,6 +25,10 @@ function getCustomStyleFn(styleSet,block){
             // console.log("line height is ",letterSpace);
             output['letterSpacing']=`${letterSpace}px`;
          }
+         if(style.indexOf('TEXTINDENT')>-1){
+            const textIndent=style.split('-')[1];
+             output['textIndent']=`${textIndent}px`;
+         }
 
      })
      return output;
