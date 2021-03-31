@@ -1,6 +1,8 @@
 import React from 'react';
 import Styles from './lineheight.less';
 import {toggleLineHeightStyles} from '../../../utils/EidtorUtils';
+import wrapWithComponent from './Wrapper';
+import Normal from './Normal';
 const lineHeightList=[
     1,
     1.2,
@@ -11,21 +13,12 @@ const lineHeightList=[
     3,
     4
 ]
-function LineHeight({onToggle,editorState}){
-    let currentFontSize=null;
+function LineHeight({onToggle,editorState,onDropDownChange}){
     function handleClick(lineHeight){
         const nextEditorState=toggleLineHeightStyles({editorState,lineHeight});
         onToggle && onToggle(nextEditorState);
+        onDropDownChange && onDropDownChange(false);
     }
-    lineHeightList.find(item=>{
-        const inlineStyle=editorState.getCurrentInlineStyle();
-        const flag=inlineStyle.has(`LINEHEIGHT-${item.label}`);  //FONTSIZE-34
-        if(flag){
-            currentFontSize=item.label;
-            return true;
-        }
-        return false;
-    })
     return <ul className={Styles.wrapper}>
     {
         lineHeightList.map(item=><li className={Styles.titleItem} key={item} onClick={()=>handleClick(item)}>
@@ -37,4 +30,11 @@ function LineHeight({onToggle,editorState}){
 </ul>
 }
 
-export default LineHeight;
+// export default LineHeight;
+
+LineHeight.displayName="LINEHEIGHT";
+
+export default wrapWithComponent(Normal,LineHeight,{
+    showText:'行高',
+    childrenSourceData:lineHeightList,
+});

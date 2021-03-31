@@ -1,10 +1,11 @@
 import {RichUtils,Modifier,CharacterMetadata, EditorState} from 'draft-js'
 
 function updateEachCharacterOfSelection(editorState,callback){
+    //  debugger;
      const contentState=editorState.getCurrentContent();
      const blockMap=contentState.getBlockMap();
 
-     const selectionState=contentState.getSelection();
+     const selectionState=editorState.getSelection();
      const startKey=selectionState.getStartKey();
      const startOffset=selectionState.getStartOffset();
      const endKey=selectionState.getEndKey();
@@ -60,28 +61,33 @@ const toggleSelfDefineStyles=(editorState,prefix='',style)=>{
        nextEditorState=updateEachCharacterOfSelection(editorState,(characterMetaData)=>{
            return characterMetaData.toJS().style.reduce((characterMetaData,characterStyle)=>{
               if(characterStyle.indexOf(prefix) === 0 && style!=characterStyle){
-                  console.log("sdfsfsdf");
-                return CharacterMetadata.removeStyle(characterMetaData,style);
+                return CharacterMetadata.removeStyle(characterMetaData,characterStyle);
               }else{
                 return characterMetaData;
               }
               
            },characterMetaData)
        });
-    }catch{
-     
+    }catch(e){
+        console.log("error is ",e);
     }
     return RichUtils.toggleInlineStyle(nextEditorState,style);
 }
 //字体大小
 export function toggleFontSizeStyles({editorState,fontSize}){
     console.log("toggleFontSizeStyles ",fontSize);
+    // debugger;
     return toggleSelfDefineStyles(editorState,"FONTSIZE-",fontSize);
 }
 // 行高
 export function toggleLineHeightStyles({editorState,lineHeight}){
     console.log("toggleLine height style ",lineHeight);
     return toggleSelfDefineStyles(editorState,"LINEHEIGHT-",lineHeight);
+}
+
+//字间距
+export function toggleLetterSpaceStyles({editorState,letterSpace}){
+    return toggleSelfDefineStyles(editorState,"LETTERSPACE-",letterSpace);
 }
 
 export function toggleTextIndentStyles({editorState,textIndent=6}){

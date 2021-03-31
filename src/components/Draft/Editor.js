@@ -7,18 +7,23 @@ import 'draft-js/dist/Draft.css';
 import Upload from './Upload';
 
 function getCustomStyleFn(styleSet,block){
-     console.log("styleSet is ",styleSet);
+    //  console.log("styleSet is ",styleSet);
      let output={};
      styleSet.forEach(style=>{
-         console.log("style is ",style);
+        //  console.log("style is ",style);
          if(style.indexOf('FONTSIZE') > -1){
             const inlineStyle=style.split('-')[1];
             output.fontSize=inlineStyle + 'px';
          }
          if(style.indexOf('LINEHEIGHT') > -1){ // LINEHEIGHT
             const lineHeight=style.split('-')[1];
-            console.log("line height is ",lineHeight);
+            // console.log("line height is ",lineHeight);
             output.lineHeight=lineHeight;
+         }
+         if(style.indexOf('LETTERSPACE') > -1){
+            const letterSpace=style.split('-')[1];
+            // console.log("line height is ",letterSpace);
+            output['letterSpacing']=`${letterSpace}px`;
          }
 
      })
@@ -223,16 +228,18 @@ class BlogEditor extends React.Component{
         const {editorState}=this.state;
         let className = 'RichEditor-editor';
         var contentState = editorState.getCurrentContent();
-      
         if (!contentState.hasText()) {
         //   if (contentState.getBlockMap().first().getType() !== 'unstyled') {
         //     className += ' RichEditor-hidePlaceholder';
         //   }
         }
         return <div className={Styles.wrapper}>
-            <BlockStyleCtls editorState={editorState} onToggle={this.toggleBlockTypeBtn} onToggleOtherStyle={this.handleOtherStyles}/>
-            <InlineStyleCtls editorState={editorState} onToggle={this.toggleInlineTypeBtn}></InlineStyleCtls>
-            <Upload onCallback={this.handleUploadCB}></Upload>
+            <BlockStyleCtls editorState={editorState} 
+                onToggle={this.toggleBlockTypeBtn} 
+                onToggleInlineType={this.toggleInlineTypeBtn} 
+                onToggleOtherStyle={this.handleOtherStyles}/>
+            {/* <Upload onCallback={this.handleUploadCB}></Upload> */}
+            <div style={{height:30}}></div>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
                     customStyleFn={getCustomStyleFn}

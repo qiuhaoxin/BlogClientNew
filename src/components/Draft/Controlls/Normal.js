@@ -1,23 +1,23 @@
 import React,{useState,Children,useEffect,useRef} from 'react';
 import Styles from './normal.less';
 import DropDown from './DropDown';
-function MouseTip({visible}){
-    return <div style={{display:visible ? 'block' : 'none'}} 
-    className={Styles.tipWrapper}>
+import MouseTip from '../../TipContent';
+// function MouseTip({visible}){
+//     return <div style={{display:visible ? 'block' : 'none'}} 
+//     className={Styles.tipWrapper}>
 
-    </div>
-}
-function Normal({showText,children,style}){
-    const [showChoose,setShowChoose]=useState(false);
+//     </div>
+// }
+function Normal({showText,children,tipText,style,render,dropDownVisible,onDropDownChange}){
     const [wrapperStyle,setWrapperStyle]=useState(null);
     const [tipVisible,setTipVisible]=useState(false);
     const contentRef=useRef();
     function handleClick(){
-        setShowChoose(true);
+        onDropDownChange(true);
         setWrapperStyle({background:'#eee'})
     }
     function handleMouseEnter(e){
-       if(!showChoose){
+       if(!dropDownVisible){
         setTipVisible(true);
        }
        
@@ -37,7 +37,7 @@ function Normal({showText,children,style}){
             target=target.parentNode;
         }
         if(!flag){
-           setShowChoose(false);
+           onDropDownChange(false);
            setWrapperStyle({});
         }
         
@@ -51,14 +51,16 @@ function Normal({showText,children,style}){
         }
     })
     return <div ref={contentRef} style={{...wrapperStyle,...style}} 
-    className={Styles.wrapper} onClick={handleClick}>
-        <div style={{width:80}}    onMouseEnter={handleMouseEnter} 
-        onMouseLeave={handleMouseLeave} >{showText}</div>
+           className={Styles.wrapper} >
+        <div style={{width:90,paddingLeft:10}}    onMouseEnter={handleMouseEnter} 
+             onMouseLeave={handleMouseLeave} onClick={handleClick}>
+            {showText}
+        </div>
         <span className="triangle"></span>
-        <MouseTip visible={tipVisible}/>
-        <DropDown visible={showChoose}>
+        <MouseTip tipText={tipText} visible={tipVisible}/>
+        <DropDown visible={dropDownVisible}>
             {
-                Children.only(children)
+                render()
             }
         </DropDown>
     </div>

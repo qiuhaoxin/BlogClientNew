@@ -1,0 +1,25 @@
+.tipWrapper {
+  position: absolute;
+  height: 28px;
+  background: rgba(0, 0, 0, 1);
+  color: #fff;
+  left: 50%;
+  margin-left: -22px;
+  bottom: -34px;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 14px;
+  padding: 0 6px;
+  line-height: 28px;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 40%;
+    bottom: 26px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #000;
+  }
+}
