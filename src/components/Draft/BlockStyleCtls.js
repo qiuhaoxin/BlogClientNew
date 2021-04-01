@@ -1,6 +1,5 @@
 import React from 'react';
 import Styles from './BlockStyleCtls.less';
-import Normal from './Controlls/Normal';
 import HeadingPicker from './Controlls/Headings';
 import Divider from '../Divider';
 import LetterSpacePicker from './Controlls/LetterSpace';
@@ -10,6 +9,7 @@ import FontSizePicker from './Controlls/FontSize'
 import SingleIcon from './Controlls/SingleIcon';
 import PairIcon from './Controlls/PairIcon';
 import TextIndentPicker from './Controlls/TextIndent';
+import LinkEditorPicker from './Controlls/LinkEditor';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -49,14 +49,7 @@ class BlockStyleCtls extends React.PureComponent{
             <Divider/>
             <TextIndentPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></TextIndentPicker>
             <Divider />
-            <PairIcon iconArr={
-                [
-                    {iconName:'icon-link',iconId:1,iconType:'link'},
-                    {iconName:'icon-cancel_link',iconId:2,iconType:'unlink'}
-                ]
-            } onToggleClick={onToggleOtherStyle} iconStyle={{fontSize:18}} >
-
-            </PairIcon>
+            <LinkEditorPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></LinkEditorPicker>
         </div>
     }
 }

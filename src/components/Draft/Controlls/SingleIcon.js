@@ -1,7 +1,7 @@
 import React from 'react';
 import Styles from './singleIcon.less';
 
-function SingleIcon({iconName,blockType=null,inlineStyle=null,iconType,onToggleClick,iconStyle}){
+function SingleIcon({iconName,blockType=null,inlineStyle=null,iconType,onToggleClick,iconStyle,disabled=false}){
     let flag=false;
     if(inlineStyle){
         //如果含有指定类型样式 图标呈选中样式
@@ -12,10 +12,15 @@ function SingleIcon({iconName,blockType=null,inlineStyle=null,iconType,onToggleC
         flag=true;
     }
     function handleIconClick(){
-        onToggleClick && onToggleClick();
+        if(disabled)return;
+        onToggleClick && onToggleClick(iconType);
+    }
+    let iconStyleNew={
+        ...iconStyle,
+        color:disabled ? '#eee' : (flag ? 'blue':'#555'),
     }
     return <span className={Styles.iconWrapper} onClick={handleIconClick}>
-        <i style={{...iconStyle,color:flag ? 'blue' : '#555'}} className={iconName}></i>
+        <i style={iconStyleNew} className={iconName}></i>
     </span>
 }
 

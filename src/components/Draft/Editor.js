@@ -25,11 +25,6 @@ function getCustomStyleFn(styleSet,block){
             // console.log("line height is ",letterSpace);
             output['letterSpacing']=`${letterSpace}px`;
          }
-         if(style.indexOf('TEXTINDENT')>-1){
-            const textIndent=style.split('-')[1];
-             output['textIndent']=`${textIndent}px`;
-         }
-
      })
      return output;
 }
@@ -44,11 +39,39 @@ function getCustomStyleFn(styleSet,block){
       };
 
       function getBlockStyle(block) {
-        switch (block.getType()) {
-          case 'blockquote': return Styles['RichEditor-blockquote'];
-          case 'code-block': return Styles['public-DraftStyleDefault-pre']
-          default: return null;
+        const blockData=block.getData();
+        let textIndent=null;
+        let classNameStr="";
+        if(blockData){
+            textIndent=blockData.get('textIndent');
         }
+        if(textIndent){
+            classNameStr+=`jdtd-${textIndent} `;
+        }
+        switch (block.getType()) {
+          case 'blockquote': 
+              classNameStr+="RichEditor-blockquote ";
+            break;//return Styles['RichEditor-blockquote'];
+          case 'code-block': 
+          classNameStr+="public-DraftStyleDefault-pre ";
+          break;
+          //return Styles['public-DraftStyleDefault-pre']
+          default:break;;
+        }
+
+        const classNameArr=classNameStr.split(' ');
+        console.log("clasName arr i s",classNameArr);
+        let classNameResult='';
+        if(classNameArr && classNameArr.length > 0){
+            classNameResult=classNameArr.map(className=>{
+                return `${Styles[className]}`
+            })
+            console.log("classNameResult is ",classNameResult);
+            return classNameResult.join(' ');
+        }
+        return null;
+
+
       }
 function Image({src}){
     return <img src={src}/>

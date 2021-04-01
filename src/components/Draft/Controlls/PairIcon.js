@@ -8,7 +8,7 @@ function PairIcon({iconArr,...restProps}){
        {
            iconArr.map(item=>{
              
-               return <SingleIcon iconName={item.iconName} key={item.iconId} {...restProps}/>
+               return <SingleIcon {...item} iconName={item.iconName} key={item.iconId} {...restProps}/>
            })
        }
     </div>

@@ -1,4 +1,34 @@
-import {RichUtils,Modifier,CharacterMetadata, EditorState} from 'draft-js'
+import {RichUtils,Modifier,CharacterMetadata, EditorState} from 'draft-js';
+import {setBlockData,} from 'draftjs-utils';
+
+export function getSelectionBlock(editorState){
+    const selectionState=editorState.getSelection();
+    const block=editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
+    return block;
+}
+
+export function getSelectionBlockData(editorState,name){
+    const blockData=getSelectionBlock(editorState).getData();   // Returns block-level metadata
+    return name ? blockData.get(name) : blockData;
+}
+
+export function setSelectionBlockData(editorState,blockData,override){
+     const newBlockData=override ? blockData : Object.assign({},getSelectionBlockData(editorState).toJS(),blockData);
+     Object.keys(newBlockData).forEach(key=>{
+         if(newBlockData.hasOwnProperty(key) && newBlockData[key]==undefined){
+             delete newBlockData[key];
+         }
+     })
+     return setBlockData(editorState,newBlockData);
+}
+
+export function getSelectionBlockType(editorState){
+    const block=getSelectionBlock(editorState);
+    const type=block.getType();
+    return type;
+}
+
+
 
 function updateEachCharacterOfSelection(editorState,callback){
     //  debugger;
@@ -75,19 +105,28 @@ const toggleSelfDefineStyles=(editorState,prefix='',style)=>{
 }
 //字体大小
 export function toggleFontSizeStyles({editorState,fontSize}){
-    console.log("toggleFontSizeStyles ",fontSize);
-    // debugger;
     return toggleSelfDefineStyles(editorState,"FONTSIZE-",fontSize);
 }
 // 行高
 export function toggleLineHeightStyles({editorState,lineHeight}){
-    console.log("toggleLine height style ",lineHeight);
     return toggleSelfDefineStyles(editorState,"LINEHEIGHT-",lineHeight);
 }
 
-export function toggleTextIndentStyles({editorState,textIndent=4}){
-    console.log("editor toggle text indent is ",editorState);
-    return toggleSelfDefineStyles(editorState,"TEXTINDENT-",textIndent);
+function changeSelectionTextIndent(editorState,changeIndent,maxIndent){
+     return changeIndent < 0 || changeIndent > maxIndent || isNaN(changeIndent) 
+     ? editorState 
+     : setSelectionBlockData(editorState,{textIndent:changeIndent || undefined});
+}
+export function toggleIncreaseTextIndentStyles({editorState,maxIndent=4}){
+    const curIndent=getSelectionBlockData(editorState,"textIndent") || 0;
+    return changeSelectionTextIndent(editorState,curIndent + 1,maxIndent);
+}
+
+export function toggleDecreaseTextIndentStyles({editorState,maxIndent=4}){
+     const curIndent=getSelectionBlockData(editorState,'textIndent');
+     if(curIndent){
+        return changeSelectionTextIndent(editorState,curIndent - 1,maxIndent);
+     }
 }
 
 //字间距
