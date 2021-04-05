@@ -84,6 +84,35 @@ function updateEachCharacterOfSelection(editorState,callback){
      let nextEditorState=EditorState.push(editorState,newContentState,'update-selection-character-list');
      return nextEditorState;
 }
+
+const toggleSelectionLink(editorState,href,target){
+    const contentState=editorState.getCurrentContent();
+    const selectionState=editorState.getSelection();
+
+    const entityData={href,target};
+
+    if(selectionState.isCollapsed() || getSelectionBlockType(editorState)=='atomic'){
+        return editorState;
+    }
+    if(href==false){
+        return RichUtils.toggleLink(editorState,selectionState,null);
+    }
+    if(target==null){
+        delete entityData.href;
+    }
+    try{
+        const nextContentState=contentState.createEntity('LINK','MUTABLE',entityData);
+        const entityKey=nextContentState.getLastCreatedEntityKey();
+
+        let nextEditorState=EditorState.set(editorState,{
+            currentContent:nextContentState,
+        });
+        nextEditorState=RichUtils.toggleLink(nextEditorState,selectionState,entityKey);
+    }catch(e){
+
+    }
+
+}
 const toggleSelfDefineStyles=(editorState,prefix='',style)=>{
     let nextEditorState=editorState;
     style=prefix + style;

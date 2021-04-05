@@ -9,12 +9,23 @@ const initLinkArr=[
 
 function LinkEditor({editorState,onToggle}){
     const [linkArr,setLinkArr]=useState(initLinkArr);
-    function handleClick(){
+    const [visible,setVisible]=useState(false);
+    function handleClick(iconType){
+        console.log("iconType linkEditor is ",iconType);
+        if(iconType=='link'){
+            console.log('sdfsdfsfsdfs');
+           setVisible(true);
+        }else if(iconType=='unlink'){
 
+
+        }
+    }
+    function handleLinkInputVisible(visible){
+        setVisible(visible);
     }
     return <div>
         <PairIcon iconArr={linkArr} onToggleClick={handleClick} iconStyle={{fontSize:18}} />
-        <LinkInput />
+        <LinkInput onVisible={handleLinkInputVisible} visible={visible}/>
     </div>
 }
 
