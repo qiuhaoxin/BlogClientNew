@@ -65,7 +65,6 @@ function* fetchArticleById(payload){
       yield put({
          type:Actions.SYNC_ARTICLE,
          payload:data[0],
-         
       })
    }
    callback && callback(result);

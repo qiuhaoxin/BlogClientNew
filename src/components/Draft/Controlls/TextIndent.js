@@ -4,12 +4,11 @@ import {toggleIncreaseTextIndentStyles,getSelectionBlockData,toggleDecreaseTextI
 import PairIcon from './PairIcon';
 const initTextIndentArr=[
     {iconName:'icon-right_indent',iconId:1,iconType:'rightIndent',disabled:false,tipText:'增加缩进'},
-    {iconName:'icon-left_indent',iconId:2,iconType:'leftIndent',disabled:false,tipText:'减少缩进'}
+    {iconName:'icon-left_indent',iconId:2,iconType:'leftIndent',disabled:true,tipText:'减少缩进'}
 ];
 function TextIndent({onToggle,editorState}){
     const hasTextIndent=getSelectionBlockData(editorState,"textIndent");
     const [textIndentArr,setTextIndentArr]=useState(initTextIndentArr);
-    console.log("TextIndent has text indent ?",hasTextIndent);
     // if(hasTextIndent==0){
     //     setTextIndentArr([
     //         {iconName:'icon-right_indent',iconId:1,iconType:'rightIndent',disabled:true},

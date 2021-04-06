@@ -1,6 +1,7 @@
 /**
  * 高阶组件
  */
+
 import React from 'react';
 function wrapWithComponent(WrapperComponent,ChildComponent,config){
     return class extends React.Component{

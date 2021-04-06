@@ -92,36 +92,35 @@ class Publish extends React.Component{
         })
     }
     _handlePublish(){
-        const {title,imgSrc,bgImg}=this.state;
-        const {dispatch}=this.props;
+
         if(this._verify()){
             this.setState({
                 dialogVisible:true,
             })
         }
-        // if(this.blogEditor){
-        //     const editor=this.blogEditor.current.getHTMLFromRaw();
-        //     console.log("after convert to string is ",JSON.stringify(editor));
-        //     dispatch({
-        //         type:Actions.PUBLISH,
-        //         payload:{
-        //             title,
-        //             body:JSON.stringify(editor),
-        //             domain:1,
-        //             userId:1,
-        //             bgImg
-        //         },
-        //         callback:function(res){
-
-        //         }
-        //     })
-        // }
     }
     handleSave=()=>{
-        console.log("handleSave");
+        const {dispatch}=this.props;
+        const {title,imgSrc,bgImg}=this.state;
+        if(this.blogEditor){
+            const editor=this.blogEditor.current.getJsonFromEditor();
+            console.log("after convert to string is ",JSON.stringify(editor));
+            dispatch({
+                type:Actions.PUBLISH,
+                payload:{
+                    title,
+                    body:JSON.stringify(editor),
+                    domain:1,
+                    userId:1,
+                    bgImg
+                },
+                callback:function(res){
+
+                }
+            })
+        }
     }
     handleCancel=()=>{
-        console.log("handleCancel");
         this.setState({
             dialogVisible:false,
         })
@@ -129,7 +128,6 @@ class Publish extends React.Component{
     render(){
         const {rect,dialogVisible}=this.state;
         const {domainList}=this.props;
-        console.log("domainList is ",domainList);
         return <div className={Styles.wrapper}>
             <div className={Styles.row}>
                 <span onClick={this.handlePublish}>发表</span>

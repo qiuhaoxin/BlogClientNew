@@ -11,6 +11,7 @@ import PairIcon from './Controlls/PairIcon';
 import TextIndentPicker from './Controlls/TextIndent';
 import LinkEditorPicker from './Controlls/LinkEditor';
 import Upload from './Upload';
+import Image from './Controlls/Image';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -52,7 +53,7 @@ class BlockStyleCtls extends React.PureComponent{
             <Divider />
             <LinkEditorPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></LinkEditorPicker>
             <Divider />
-            <Upload />
+            <Image tipText="上传图片" editorState={editorState} onToggle={onToggleOtherStyle}/>
         </div>
     }
 }

@@ -1,5 +1,6 @@
-import {RichUtils,Modifier,CharacterMetadata, EditorState} from 'draft-js';
+import {RichUtils,Modifier,CharacterMetadata, EditorState,AtomicBlockUtils} from 'draft-js';
 import {setBlockData,getSelectionEntity} from 'draftjs-utils';
+
 
 export function getSelectionBlock(editorState){
     const selectionState=editorState.getSelection();
@@ -138,7 +139,24 @@ function updateEachCharacterOfSelection(editorState,callback){
      let nextEditorState=EditorState.push(editorState,newContentState,'update-selection-character-list');
      return nextEditorState;
 }
-
+//上传图片
+export function toggleAddImage(editorState,imgInfo){
+    const {imgPath}=imgInfo;
+    try{
+        const contentState=editorState.getCurrentContent();
+        const nextContentState=contentState.createEntity("image","MUTABLE",{
+            src:imgPath,
+        });
+        const lastEntityKey=nextContentState.getLastCreatedEntityKey();
+        let nextEditorState=EditorState.set(editorState,{
+            currentContent:nextContentState,
+        });
+        return AtomicBlockUtils.insertAtomicBlock(nextEditorState,lastEntityKey,' ');
+    }catch(err){
+        console.error("toggleAddImage error is ",err);
+        return editorState;
+    }
+}
 export function toggleSelectionLink(editorState,href,target){
     console.log("togglesSelectionList ",href+" and target is ",target);
     const contentState=editorState.getCurrentContent();

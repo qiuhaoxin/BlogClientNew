@@ -4,7 +4,7 @@ import Actions from '../../actions';
 import {Editor,EditorState,RichUtils,convertFromHTML,ContentState,convertFromRaw} from 'draft-js';
 import Styles from './article.less';
 import 'draft-js/dist/Draft.css';
-
+import BlogEditor from '../../components/Draft/Editor';
 
 const styleMap = {
     CODE: {
@@ -73,6 +73,7 @@ class Article extends React.Component{
 
      }
      _fetchArticle(){
+       console.log("ftetsdflsdjflsdkjflsdfjls");
          const {dispatch}=this.props;
          const {articleId}=this.props.match.params;
          const _this=this;
@@ -97,19 +98,20 @@ class Article extends React.Component{
      }
      render(){
          const {editorState}=this.state;
-         const {articleData:{ftitle}}=this.props;
+         const {articleData}=this.props;
+         console.log("fbody is ",articleData);
          return <div className={Styles.wrapper}>
-             <div className={Styles.title}>{ftitle}</div>
+             <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>
-                
-                <Editor                     
+                <BlogEditor initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
+                {/* <Editor                     
                     blockRendererFn={this.renderBlockFn}
                     customStyleMap={styleMap}
                     blockStyleFn={getBlockStyle} 
                     readOnly={true} 
                     editorState={editorState} 
                     ref={this.editor} 
-                    onChange={this.handleEditorChange}></Editor>
+                    onChange={this.handleEditorChange}></Editor> */}
             </div>
          </div>
      }
