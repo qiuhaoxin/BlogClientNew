@@ -1,5 +1,5 @@
 import {RichUtils,Modifier,CharacterMetadata, EditorState} from 'draft-js';
-import {setBlockData,} from 'draftjs-utils';
+import {setBlockData,getSelectionEntity} from 'draftjs-utils';
 
 export function getSelectionBlock(editorState){
     const selectionState=editorState.getSelection();
@@ -22,11 +22,65 @@ export function setSelectionBlockData(editorState,blockData,override){
      return setBlockData(editorState,newBlockData);
 }
 
+export function isSelectionCollapsed(editorState){
+    return editorState.getSelection().isCollapsed();
+}
+
+export function insertText(editorState,text,inlineStyle,entity){
+    const selectionState=editorState.getSelection();
+    const blockType=getSelectionBlockType(editorState);
+    if(blockType=='atomic'){
+        return editorState;
+    }
+    let contentState=editorState.getCurrentContent();
+    let entityKey;
+    if(entity && entity.type){
+       contentState=contentState.createEntity(entity.type,entity.mutability || 'MUTABLE',entity.data);
+       entityKey=contentState.getLastCreatedEntityKey();
+    }
+    if(!selectionState.isCollapsed()){
+        return EditorState.push(editorState,Modifier.replaceText(contentState,selectionState,text,inlineStyle,entityKey),"replace-text");
+    }else{
+        return EditorState.push(editorState,Modifier.insertText(contentState,selectionState,text,inlineStyle,entityKey),"insert-text");
+    }
+}
+
+export function getSelectionText(editorState){
+   
+    const selectionState=editorState.getSelection();
+    if(selectionState.isCollapsed() || getSelectionBlockType(editorState)=='atomic')return '';
+
+    const contentState=editorState.getCurrentContent();
+    const currentContentBlock=contentState.getBlockForKey(selectionState.getAnchorKey());
+    const start=selectionState.getStartOffset();
+    const end=selectionState.getEndOffset();
+
+    return currentContentBlock.getText().slice(start,end);
+}
+
 export function getSelectionBlockType(editorState){
     const block=getSelectionBlock(editorState);
     const type=block.getType();
     return type;
 }
+
+export function getSelectionEntityData(editorState,type){
+    
+    const entityKey=getSelectionEntity(editorState);
+    if(entityKey){
+        const contentState=editorState.getCurrentContent();
+        const entityData=contentState.getEntity(entityKey);
+        console.log("getSelectionEntityData result is ",entityData);
+        if(entityData && entityData.get('type')==type){
+            return entityData.getData();
+        }else{
+            return {}
+        }
+    }
+    return {};
+}
+
+
 
 
 
@@ -85,7 +139,8 @@ function updateEachCharacterOfSelection(editorState,callback){
      return nextEditorState;
 }
 
-const toggleSelectionLink(editorState,href,target){
+export function toggleSelectionLink(editorState,href,target){
+    console.log("togglesSelectionList ",href+" and target is ",target);
     const contentState=editorState.getCurrentContent();
     const selectionState=editorState.getSelection();
 
@@ -101,15 +156,26 @@ const toggleSelectionLink(editorState,href,target){
         delete entityData.href;
     }
     try{
-        const nextContentState=contentState.createEntity('LINK','MUTABLE',entityData);
+        const nextContentState=contentState.createEntity('LINK','MUTABLE',entityData);
         const entityKey=nextContentState.getLastCreatedEntityKey();
 
         let nextEditorState=EditorState.set(editorState,{
             currentContent:nextContentState,
         });
         nextEditorState=RichUtils.toggleLink(nextEditorState,selectionState,entityKey);
+        nextEditorState=EditorState.forceSelection(nextEditorState,selectionState.merge({
+            anchorOffset:selectionState.getEndOffset(),
+            focusOffset:selectionState.getEndOffset(),
+        }))
+        nextEditorState=EditorState.push(nextEditorState,Modifier.insertText(
+            nextEditorState.getCurrentContent(),
+            nextEditorState.getSelection(),
+            ''
+        ),"insert-text");
+        return nextEditorState;
     }catch(e){
-
+        console.error("toggle Selection link err",e);
+        return editorState;
     }
 
 }

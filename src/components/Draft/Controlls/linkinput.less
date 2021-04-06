@@ -6,7 +6,8 @@
   position: absolute;
   // transform: scale(0);
   transform: scale(0);
-  transition: transform .2s linear;
+  transform-origin: 0 0;
+  transition: transform 0.2s linear;
   z-index: 101;
   & .innerWrapper {
     margin: 20px 20px;
@@ -23,31 +24,30 @@
       font-size: 14px;
     }
   }
-  & > footer{
-     height:48px;
-     width:100%;
-     display: inline-flex;
-     border-top:1px solid #555;
-     align-items: center;
-     justify-content: flex-end;
-     & button{
-        height: 32px;
-        border:none;
-        border-radius: 2px;
-        padding:0px 20px;
-        margin-right: 20px;
-        font-size:14px;
-        background-color:hsla(0,0%,100%,.15);
-        color:#fff;
-        cursor: pointer;
-        outline: none;
-        &.sure{
-            background-color: #3498db;
-        }
-        &.cancel{
-
-        }
-     }
+  & > footer {
+    height: 48px;
+    width: 100%;
+    display: inline-flex;
+    border-top: 1px solid #555;
+    align-items: center;
+    justify-content: flex-end;
+    & button {
+      height: 32px;
+      border: none;
+      border-radius: 2px;
+      padding: 0px 20px;
+      margin-right: 20px;
+      font-size: 14px;
+      background-color: hsla(0, 0%, 100%, 0.15);
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+      &.sure {
+        background-color: #3498db;
+      }
+      &.cancel {
+      }
+    }
   }
 
   &:before {

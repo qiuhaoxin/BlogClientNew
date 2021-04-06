@@ -1,42 +1,82 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import Styles from './linkinput.less';
+import {getSelectionText,isSelectionCollapsed,getSelectionEntityData, getSelectionBlockType} from '../../../utils/EidtorUtils'
 
 
-function InputLink({visible,onVisible}){
-    const [linkStr,setLinkStr]=useState('ee');
-    function handleBtnClick(e){
+class InputLink extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            href:'',
+            text:'',
+            textSelected:'',
+        }
+        
+        this.handleInputChange=this._handleInputChange.bind(this);
+        this.handleBtnClick=this._handleBtnClick.bind(this);
+    }
+    UNSAFE_componentWillReceiveProps(nextProps){
+        const {href}=getSelectionEntityData(nextProps.editorState,'LINK');
+        const textSelected=!isSelectionCollapsed(this.props.editorState) && getSelectionBlockType(this.props.editorState)!=='atomic';
+        let selectedText;
+        if(textSelected){
+            selectedText=getSelectionText(this.props.editorState);
+        }
+        this.setState({
+            href:href ? href : '',
+            text:selectedText,
+            textSelected,
+        })
+    }
+    _handleInputChange(e){
         const target=e.target;
+        const inputValue=target.value;
+        this.setState({
+            href:inputValue,
+        })
+    }
+    _handleBtnClick(e){
+        const target=e.target;
+        const {onVisible,onAddLink}=this.props;
+        const {href,text,textSelected}=this.state;
         const dataIdAttr=target.getAttribute('data-id');
-        console.log('data id attr is ',dataIdAttr);
         if(dataIdAttr=='cancel'){
             onVisible && onVisible(false);
         }else if(dataIdAttr=='sure'){
             const emptyReg=/^\s*$/;
-            const result=emptyReg.test(linkStr);
+            const result=emptyReg.test(href);
             if(result){
                 console.error("链接不能为空！")
                 return;
             }
-            onVisible && onVisible(false);
+            onAddLink && onAddLink({
+                href,
+                target:'_blank',
+                text,
+                textSelected
+            },()=>{
+                this.setState({
+                    href:'',
+                    text:'',
+                    textSelected:''
+                },()=>{
+                })
+            });
         }
     }
-    function handleInputChange(e){
-        const target=e.target;
-        const inputValue=target.value;
-        console.log("inputvalue is ",inputValue);
-        setLinkStr(inputValue);
-    }
-    // style={{display:visible ? 'block' : 'none'}}
-    //style={{display:visible ? 'transform:scale(1)' : 'transform:scale(0)'}}
-    return <div className={Styles.wrapper} 
-    style={{transform:visible ? 'scale(1)' : 'scale(0)'}}>
-        <div className={Styles.innerWrapper}>
-            <input value={linkStr} onChange={handleInputChange} placeholder="请输入链接地址" />
+    render(){
+        const {visible}=this.props;
+        const {href}=this.state;
+        return <div className={Styles.wrapper} 
+        style={{transform:visible ? 'scale(1)' : 'scale(0)'}}>
+            <div className={Styles.innerWrapper}>
+                <input value={href} onChange={this.handleInputChange} placeholder="请输入链接地址" />
+            </div>
+            <footer onClick={this.handleBtnClick}>
+                <button  data-id="cancel" className={Styles.cancel}>取消</button>
+                <button data-id="sure" className={Styles.sure}>确定</button>
+            </footer>
         </div>
-        <footer onClick={handleBtnClick}>
-            <button  data-id="cancel" className={Styles.cancel}>取消</button>
-            <button data-id="sure" className={Styles.sure}>确定</button>
-        </footer>
-    </div>
+    }
 }
 export default InputLink;

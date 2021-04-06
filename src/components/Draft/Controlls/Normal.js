@@ -2,12 +2,6 @@ import React,{useState,Children,useEffect,useRef} from 'react';
 import Styles from './normal.less';
 import DropDown from './DropDown';
 import MouseTip from '../../TipContent';
-// function MouseTip({visible}){
-//     return <div style={{display:visible ? 'block' : 'none'}} 
-//     className={Styles.tipWrapper}>
-
-//     </div>
-// }
 function Normal({showText,children,tipText,style,render,dropDownVisible,onDropDownChange}){
     const [wrapperStyle,setWrapperStyle]=useState(null);
     const [tipVisible,setTipVisible]=useState(false);

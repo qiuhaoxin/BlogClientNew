@@ -1,11 +1,41 @@
 import React,{createRef} from 'react';
-import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw, CharacterMetadata,getDefaultKeyBinding} from 'draft-js';
+import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,convertToRaw, 
+    CharacterMetadata,getDefaultKeyBinding,
+    CompositeDecorator} from 'draft-js';
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
-import InlineStyleCtls from './InlineStyleCtls';
 import 'draft-js/dist/Draft.css';
 import Upload from './Upload';
 
+
+const decorator=new CompositeDecorator([
+    {
+        strategy:findEntitiesLink,
+        component:Link,
+    }
+])
+function findEntitiesLink(contentBlock,callback,contentState){
+    //findEntityRanges
+    contentBlock.findEntityRanges(
+        (character)=>{
+        const entityKey=character.getEntity();
+        if(entityKey){
+            const res=contentState.getEntity(entityKey).getType();
+        }
+        return (entityKey!==null && contentState.getEntity(entityKey).getType()==='LINK')
+        },
+        callback
+    )
+
+}
+function Link(props){
+    const {href}=props.contentState.getEntity(props.entityKey).getData();
+    return <a href={href} style={{color: '#1890ff',textDecoration: 'underline'}}>
+        {
+            props.children
+        }
+    </a>
+}
 function getCustomStyleFn(styleSet,block){
     //  console.log("styleSet is ",styleSet);
      let output={};
@@ -98,9 +128,9 @@ class BlogEditor extends React.Component{
         super(props);
         this.editor=createRef();
         this.state={
-            editorState:EditorState.createEmpty(),
+            editorState:EditorState.createEmpty(decorator),
         }
-        this.onChange=(editorState)=>this.setState({editorState});
+        this.onChange=(editorState,callback)=>this.setState({editorState},()=>{callback && callback()});
         this.toggleBlockTypeBtn=this._toggleBlockTypeBtn.bind(this);
         this.toggleInlineTypeBtn=this._toggleInlineTypeBtn.bind(this);
         this.renderBlockFn=this._renderBlockFn.bind(this);
@@ -180,8 +210,8 @@ class BlogEditor extends React.Component{
             }
         },characterMetaData);
     }
-    handleOtherStyles(nextEditorState){
-       this.onChange(nextEditorState);
+    handleOtherStyles(nextEditorState,callback){
+       this.onChange(nextEditorState,callback);
     }
     handleOtherStyles1=(prefix="",style)=>{
         console.log("prefix is ",prefix+" and style is ",style);

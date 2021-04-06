@@ -1,6 +1,8 @@
+/**
+ * 高阶组件
+ */
 import React from 'react';
 function wrapWithComponent(WrapperComponent,ChildComponent,config){
-    console.log("displayName is ",ChildComponent.displayName);
     return class extends React.Component{
         constructor(props){
             super(props);
@@ -13,7 +15,6 @@ function wrapWithComponent(WrapperComponent,ChildComponent,config){
             const {editorState}=props;
             const curInlineStyle=editorState.getCurrentInlineStyle();
             const contentState=editorState.getCurrentContent();
-            // console.log("getCurrentContent block is ",block);
             const childrenDisplayName=ChildComponent.displayName;
             const childrenData=config?.childrenSourceData ?? [];
             let showText=null;
@@ -28,13 +29,13 @@ function wrapWithComponent(WrapperComponent,ChildComponent,config){
                      })
                 break;
                 case 'LINEHEIGHT': //
-                childrenData.find(item=>{
-                    if(curInlineStyle.has(`LINEHEIGHT-${item}`)){
-                        showText=item;
-                        return true;
-                    }
-                    return false;
-                })
+                    childrenData.find(item=>{
+                        if(curInlineStyle.has(`LINEHEIGHT-${item}`)){
+                            showText=item;
+                            return true;
+                        }
+                        return false;
+                    })
                 break;
                 case 'LETTERSPACE':
                     childrenData.find(item=>{
@@ -49,7 +50,6 @@ function wrapWithComponent(WrapperComponent,ChildComponent,config){
                     const contentState=editorState.getCurrentContent();
                     const selection=editorState.getSelection();
                     const blockType=contentState.getBlockForKey(selection.getStartKey()).getType();
-                    console.log("blockType is ",blockType);
                     const targetItem=childrenData.filter(item=>item.style==blockType)[0];
                     if(targetItem)
                        showText=targetItem.label;

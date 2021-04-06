@@ -3,8 +3,8 @@ import React,{useState} from 'react';
 import {toggleIncreaseTextIndentStyles,getSelectionBlockData,toggleDecreaseTextIndentStyles} from '../../../utils/EidtorUtils';
 import PairIcon from './PairIcon';
 const initTextIndentArr=[
-    {iconName:'icon-right_indent',iconId:1,iconType:'rightIndent',disabled:false},
-    {iconName:'icon-left_indent',iconId:2,iconType:'leftIndent',disabled:false}
+    {iconName:'icon-right_indent',iconId:1,iconType:'rightIndent',disabled:false,tipText:'增加缩进'},
+    {iconName:'icon-left_indent',iconId:2,iconType:'leftIndent',disabled:false,tipText:'减少缩进'}
 ];
 function TextIndent({onToggle,editorState}){
     const hasTextIndent=getSelectionBlockData(editorState,"textIndent");
@@ -17,7 +17,6 @@ function TextIndent({onToggle,editorState}){
     //     ])
     // }
     function handleClick(iconType){
-        console.log("text indent icon type is ",iconType);
         let nextEditorState=null;
         if(iconType=='leftIndent'){
             nextEditorState=toggleDecreaseTextIndentStyles({editorState});

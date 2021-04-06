@@ -10,6 +10,7 @@ import SingleIcon from './Controlls/SingleIcon';
 import PairIcon from './Controlls/PairIcon';
 import TextIndentPicker from './Controlls/TextIndent';
 import LinkEditorPicker from './Controlls/LinkEditor';
+import Upload from './Upload';
 const blockStyleList=[
     {label: 'Blockquote', style: 'blockquote'},
     {label: 'UL', style: 'unordered-list-item'},
@@ -34,22 +35,24 @@ class BlockStyleCtls extends React.PureComponent{
             <LineHeightPicker tipText="行高" editorState={editorState} onToggle={onToggleOtherStyle}></LineHeightPicker>
             <LetterSpacePicker tipText="字间距" editorState={editorState} onToggle={onToggleOtherStyle}></LetterSpacePicker>
             <Divider/>
-            <SingleIcon inlineStyle={inlineStyle} iconType={'BOLD'} iconName="icon-bold" iconStyle={{fontSize:14}} 
+            <SingleIcon tipText="粗体" inlineStyle={inlineStyle} iconType={'BOLD'} iconName="icon-bold" iconStyle={{fontSize:14}} 
                         onToggleClick={()=>onToggleInlineType('BOLD')}></SingleIcon>
-            <SingleIcon inlineStyle={inlineStyle} iconType={'Italic'} iconName="icon-italics" iconStyle={{fontSize:16}} 
+            <SingleIcon tipText="斜体" inlineStyle={inlineStyle} iconType={'Italic'} iconName="icon-italics" iconStyle={{fontSize:16}} 
                         onToggleClick={()=>onToggleInlineType('Italic')}></SingleIcon>
-            <SingleIcon inlineStyle={inlineStyle} iconType={'UNDERLINE'} iconName="icon-under_line" iconStyle={{fontSize:14}} 
+            <SingleIcon tipText="下划线" inlineStyle={inlineStyle} iconType={'UNDERLINE'} iconName="icon-under_line" iconStyle={{fontSize:14}} 
                         onToggleClick={()=>onToggleInlineType('UNDERLINE')}></SingleIcon>
             <Divider />
             <HeadingPicker editorState={editorState} curBlockType={blockType} onToggle={onToggle}></HeadingPicker>
-            <SingleIcon blockType={blockType} iconType={'blockquote'} iconName='icon-quote' onToggleClick={()=>onToggle('blockquote')}></SingleIcon>
-            <SingleIcon blockType={blockType} iconType={'code-block'} iconName='icon-code' onToggleClick={()=>onToggle('code-block')}></SingleIcon>
-            <SingleIcon blockType={blockType} iconType={'unordered-list-item'} iconName='icon-ul' onToggleClick={()=>onToggle('unordered-list-item')}></SingleIcon>
-            <SingleIcon blockType={blockType} iconType={'ordered-list-item'} iconName='icon-ol' onToggleClick={()=>onToggle('ordered-list-item')}></SingleIcon>
+            <SingleIcon tipText="引用" blockType={blockType} iconType={'blockquote'} iconName='icon-quote' onToggleClick={()=>onToggle('blockquote')}></SingleIcon>
+            <SingleIcon tipText="代码" blockType={blockType} iconType={'code-block'} iconName='icon-code' onToggleClick={()=>onToggle('code-block')}></SingleIcon>
+            <SingleIcon tipText="无序列表" blockType={blockType} iconType={'unordered-list-item'} iconName='icon-ul' onToggleClick={()=>onToggle('unordered-list-item')}></SingleIcon>
+            <SingleIcon tipText="有序列表" blockType={blockType} iconType={'ordered-list-item'} iconName='icon-ol' onToggleClick={()=>onToggle('ordered-list-item')}></SingleIcon>
             <Divider/>
             <TextIndentPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></TextIndentPicker>
             <Divider />
             <LinkEditorPicker tipText="缩进" editorState={editorState} onToggle={onToggleOtherStyle}></LinkEditorPicker>
+            <Divider />
+            <Upload />
         </div>
     }
 }
