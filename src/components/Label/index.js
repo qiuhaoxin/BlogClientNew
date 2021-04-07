@@ -2,16 +2,16 @@ import React,{useState} from 'react';
 import Styles from './index.less';
 
 //mode 0:纯展示  1:可以勾选
-function Label({labelText='测试',canDel=false,mode=0,labelKey,onLabelDel,style,checked=false}){
-    const [isChecked,setChecked]=useState(checked);
+function Label({labelText='测试',canDel=false,mode=0,labelKey,onChecked,onLabelDel,style,checked=false}){
+    // const [isChecked,setChecked]=useState(checked);
     function handleLabelClick(){
         if(mode==0)return;
-        if(isChecked){
-            setChecked(false);
-        }else{
-            setChecked(true);
-        }
-       
+        // if(isChecked){
+        //     setChecked(false);
+        // }else{
+        //     setChecked(true);
+        // }
+        onChecked && onChecked(labelKey);
     }
     function handleDelLabel(){
          onLabelDel && onLabelDel(labelKey);
@@ -23,7 +23,7 @@ function Label({labelText='测试',canDel=false,mode=0,labelKey,onLabelDel,style
         color:mode==1 ? '#555' : '#fff',
         cursor:mode==1 ? 'pointer' : '',
     }
-    if(isChecked){
+    if(checked){
         styleObj['background']="#0088ff";
         styleObj['border']='1px solid #0088ff';
         styleObj['color']='#fff';

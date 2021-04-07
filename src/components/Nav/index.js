@@ -5,7 +5,8 @@ import {useHistory,useLocation} from 'react-router-dom';
 const routerData=RouterData.filter(item=>item.showAsNav);
 function Nav(props){
     const history=useHistory();
-    const [curNav,setNav]=useState(routerData[0].path);
+    const location=useLocation();
+    const [curNav,setNav]=useState( location.pathname ? location.pathname :routerData[0].path);
     function itemClick(item){
         setNav(item.path)
         history.push(item.path);

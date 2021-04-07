@@ -26,9 +26,18 @@ class MainPage extends React.Component{
        return <div className={Styles.wrapper}>
           <div className={Styles.innerWrapper}>
               {
-                  articleList.map(item=><AppCard key={item.fid} title={item.title} 
-                    userName={item.userName} labelList={[]} appDes={item.fbody} articleId={item.fid}
-                    timeStamp={item.ftimestamp}></AppCard>)
+                  articleList.map(item=>{
+                    const cardProps={
+                        title:item.title,
+                        userName:item.userName,
+                        timeStamp:item.ftimestamp,
+                        imgSrc:item.fimg ? `http://localhost:5001/img/${item.fimg}` : null,
+                        appDes:item.fbody,
+                        articleId:item.fid,
+                        labelList:item.flabels ? item.flabels.split(',') : []
+                    }
+                    return <AppCard key={item.fid} {...cardProps}></AppCard>
+                  })
               }
           </div>
        </div>

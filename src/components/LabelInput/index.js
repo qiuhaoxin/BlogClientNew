@@ -1,16 +1,19 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useImperativeHandle} from 'react';
 import Styles from './index.less';
 import Label from '../Label'
 
-function LabelInput(){
+export default React.forwardRef(function LabelInput(props,ref){
     const inputRef=useRef();
     const [labelList,setLabelList]=useState([]);
+    useImperativeHandle(ref,()=>{
+        return {
+            getLabelData,
+        }
+    })
     function handleMouseDown(e){
         const keyCode=e.keyCode;
-
         if(keyCode==13 && inputRef.current.value){
             const value=inputRef.current.value;
-            console.log('vaule is ',value);
             let tempList=labelList.slice();
             tempList.push({
                 id:Date(),
@@ -22,8 +25,6 @@ function LabelInput(){
     }
     function handleLabelDel(labelKey){
         const tempLabelList=labelList.slice();
-
-        
         const idx=tempLabelList.findIndex(item=>item.id==labelKey);
         tempLabelList.splice(idx,1);
         setLabelList(tempLabelList);
@@ -33,6 +34,9 @@ function LabelInput(){
             inputRef.current.focus();
         }
     }
+    function getLabelData(){
+        return labelList; 
+    }
     return <div className={Styles.wrapper} onClick={handleFocus}>
         <div className={Styles.labelList}>
             {
@@ -41,6 +45,10 @@ function LabelInput(){
         </div>
         <input ref={inputRef} placeholder="请输入" onKeyDown={handleMouseDown}/>
     </div>
-}
+})
 
-export default LabelInput;
+// export default LabelInput;
+
+// export default React.forwardRef((props,ref)=>{
+//     return <LabelInput {...props} forwardRef={ref}/>
+// })
