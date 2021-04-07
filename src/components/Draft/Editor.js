@@ -198,6 +198,7 @@ class BlogEditor extends React.Component{
     }
     render(){
         const {editorState}=this.state;
+        const {readOnly}=this.props;
         let className = 'RichEditor-editor';
         var contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
@@ -209,7 +210,7 @@ class BlogEditor extends React.Component{
             <BlockStyleCtls editorState={editorState} 
                 onToggle={this.toggleBlockTypeBtn} 
                 onToggleInlineType={this.toggleInlineTypeBtn} 
-                onToggleOtherStyle={this.handleOtherStyles}/>
+                onToggleOtherStyle={this.handleOtherStyles} />
             <div style={{height:30}}></div>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
@@ -223,6 +224,7 @@ class BlogEditor extends React.Component{
                     ref={this.editor} 
                     handleKeyCommand={this.handleKeyCommand}
                     keyBindingFn={this.defineKeyBindingFn}
+                    readOnly={readOnly}
                 >
                 </Editor>
             </div>

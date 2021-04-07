@@ -73,7 +73,6 @@ class Article extends React.Component{
 
      }
      _fetchArticle(){
-       console.log("ftetsdflsdjflsdkjflsdfjls");
          const {dispatch}=this.props;
          const {articleId}=this.props.match.params;
          const _this=this;
@@ -103,7 +102,7 @@ class Article extends React.Component{
          return <div className={Styles.wrapper}>
              <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>
-                <BlogEditor initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
+                <BlogEditor readOnly={true} initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
                 {/* <Editor                     
                     blockRendererFn={this.renderBlockFn}
                     customStyleMap={styleMap}

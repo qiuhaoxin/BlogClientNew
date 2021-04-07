@@ -6,9 +6,7 @@ const routerData=RouterData.filter(item=>item.showAsNav);
 function Nav(props){
     const history=useHistory();
     const location=useLocation();
-    console.log('location is ',location)
-    const {pathname}=location;
-    const [curNav,setNav]=useState(pathname ? pathname : routerData[0].path);
+    const [curNav,setNav]=useState( location.pathname ? location.pathname :routerData[0].path);
     function itemClick(item){
         setNav(item.path)
         history.push(item.path);

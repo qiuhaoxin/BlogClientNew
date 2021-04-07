@@ -3,14 +3,14 @@ import Styles from './index.less';
 import Label from '../Label';
 import Http_Bg from '../../assets/http-bg.jpg';
 import {useHistory} from 'react-router-dom';
-function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId}){
+function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,imgSrc}){
     const history=useHistory();
     function jump(){
         history.push(`/article/${articleId}`);
     }
     return <div className={Styles.wrapper} onClick={jump}>
         <div className={Styles.title}>
-            <img src={Http_Bg}/>
+            <img src={imgSrc ? imgSrc : Http_Bg}/>
             <span>{title}</span>
         </div>
         <div className={Styles.appDes}>
@@ -29,7 +29,7 @@ function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId}){
         </div>
         <div className={Styles.footer}>
              {
-                 labelList.map(item=><Label key={item.key} labelText={item.name}/>)
+                 labelList.map((item,index)=><Label key={index} labelText={item}/>)
              }
         </div>
     </div>
