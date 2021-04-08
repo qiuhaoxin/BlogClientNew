@@ -102,7 +102,7 @@ class Article extends React.Component{
          return <div className={Styles.wrapper}>
              <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>
-                <BlogEditor readOnly={true} initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
+                <BlogEditor controllerVisible={false} readOnly={true} initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
                 {/* <Editor                     
                     blockRendererFn={this.renderBlockFn}
                     customStyleMap={styleMap}

@@ -5,6 +5,7 @@ import Styles from './index.less';
 import AppCard from '../../components/AppCard';
 import {connect} from 'react-redux';
 import Actions from '../../actions';
+import {convertFromRaw} from 'draft-js';
 const labelList=[
     {key:'webpack',name:'webpack'},
     {key:'gch',name:'工程化'}
@@ -27,12 +28,19 @@ class MainPage extends React.Component{
           <div className={Styles.innerWrapper}>
               {
                   articleList.map(item=>{
+                    const contentState=convertFromRaw(JSON.parse(item.fbody));
+                    const blockMap=contentState.getBlockMap();
+                    let appDes="";
+                    const firstBlock=contentState.getFirstBlock();
+                    if(firstBlock){
+                        appDes=firstBlock.getText();
+                    }
                     const cardProps={
                         title:item.title,
                         userName:item.userName,
-                        timeStamp:item.ftimestamp,
+                        timeStamp:item.fcreatetime,//item.fcreatetime,
                         imgSrc:item.fimg ? `http://localhost:5001/img/${item.fimg}` : null,
-                        appDes:item.fbody,
+                        appDes,
                         articleId:item.fid,
                         labelList:item.flabels ? item.flabels.split(',') : []
                     }

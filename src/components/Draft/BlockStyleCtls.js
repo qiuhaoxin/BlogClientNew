@@ -27,11 +27,11 @@ class BlockStyleCtls extends React.PureComponent{
        super(props);
     }
     render(){
-        const {editorState,onToggle,onToggleOtherStyle,onToggleInlineType}=this.props;
+        const {editorState,onToggle,onToggleOtherStyle,onToggleInlineType,visible}=this.props;
         const selection=editorState.getSelection();
         const blockType=editorState.getCurrentContent().getBlockForKey(selection.getStartKey()).getType();
         const inlineStyle=editorState.getCurrentInlineStyle();
-        return <div className={Styles.wrapper}>
+        return <div className={Styles.wrapper} style={{display:visible ? 'flex' : 'none'}}>
             <FontSizePicker tipText="字体大小" editorState={editorState} onToggle={onToggleOtherStyle}></FontSizePicker>
             <LineHeightPicker tipText="行高" editorState={editorState} onToggle={onToggleOtherStyle}></LineHeightPicker>
             <LetterSpacePicker tipText="字间距" editorState={editorState} onToggle={onToggleOtherStyle}></LetterSpacePicker>

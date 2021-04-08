@@ -179,7 +179,7 @@ class Publish extends React.Component{
                 <input onChange={this.handleInputChange} ref={this.inputRef} placeholder="请输入标题，最多100字"/>
             </div>
             <div className={Styles.editor}>
-              <BlogEditor ref={this.blogEditor}></BlogEditor>
+              <BlogEditor controllerVisible={true} ref={this.blogEditor}></BlogEditor>
             </div>
             <Dialog footer={<Footer onSave={this.handleSave} onCancel={this.handleCancel}></Footer>} onClose={this.handleCloseDialog} 
             animation="zoom" visible={dialogVisible} title="发布文章">
