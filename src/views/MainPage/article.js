@@ -50,6 +50,7 @@ class Article extends React.Component{
          }
          this.fetchArticle=this._fetchArticle.bind(this);
          this.renderBlockFn=this._renderBlockFn.bind(this);
+         this.handleActionClick=this._handleActionClick.bind(this);
      }
      _renderBlockFn(block){
         const type=block.getType();
@@ -70,7 +71,7 @@ class Article extends React.Component{
          }
      }
      handleEditorChange=()=>{
-
+         
      }
      _fetchArticle(){
          const {dispatch}=this.props;
@@ -95,21 +96,26 @@ class Article extends React.Component{
              }
          })
      }
+     _handleActionClick(iconType,articleId){
+       console.log("handle action click icontype is ",iconType);
+      switch(iconType){
+          case 'del':
+
+          break;
+      }
+   }
      render(){
          const {editorState}=this.state;
          const {articleData}=this.props;
+         console.log("articlData i s",articleData);
          return <div className={Styles.wrapper}>
              <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>
-                <BlogEditor controllerVisible={false} readOnly={true} initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}/>
-                {/* <Editor                     
-                    blockRendererFn={this.renderBlockFn}
-                    customStyleMap={styleMap}
-                    blockStyleFn={getBlockStyle} 
-                    readOnly={true} 
-                    editorState={editorState} 
-                    ref={this.editor} 
-                    onChange={this.handleEditorChange}></Editor> */}
+                <BlogEditor controllerVisible={false} readOnly={true} 
+                onActionClick={this.handleActionClick}
+                initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}
+                labelList={articleData.flabels ? articleData.flabels.split(','):[]}
+                />
             </div>
          </div>
      }

@@ -6,6 +6,7 @@ import {Editor,EditorState,ContentState,Modifier,RichUtils,AtomicBlockUtils,conv
 import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import 'draft-js/dist/Draft.css';
+import LabelAndAction from '../LabelAndAction';
 
 const decorator=new CompositeDecorator([
     {
@@ -198,7 +199,7 @@ class BlogEditor extends React.Component{
     }
     render(){
         const {editorState}=this.state;
-        const {readOnly,controllerVisible}=this.props;
+        const {readOnly,controllerVisible,labelList,onActionClick}=this.props;
         let className = 'RichEditor-editor';
         var contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
@@ -209,8 +210,12 @@ class BlogEditor extends React.Component{
         return <div className={Styles.wrapper}>
             <BlockStyleCtls visible={controllerVisible} editorState={editorState} 
                 onToggle={this.toggleBlockTypeBtn} 
+
                 onToggleInlineType={this.toggleInlineTypeBtn} 
                 onToggleOtherStyle={this.handleOtherStyles} />
+            <div style={{display:controllerVisible ? 'none' : 'block'}}>
+                 <LabelAndAction onActionClick={onActionClick} iconArr={[{key:1,iconClass:'icon-editor',iconType:'editor'}]} labelList={labelList}></LabelAndAction>
+            </div>
             <div className={className.split(' ').map(item=>Styles[`${item}`])} onClick={this.focus}>
                 <Editor
                     customStyleFn={getCustomStyleFn}

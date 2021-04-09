@@ -54,8 +54,6 @@ class MainPage extends React.Component{
         })
     }
     _handleActionClick(iconType,articleId){
-       console.log("articleId handleActionClick is ",articleId);
-       console.log("iconType is ",iconType);
        switch(iconType){
            case 'del':
              this._handleDelArticle(articleId);

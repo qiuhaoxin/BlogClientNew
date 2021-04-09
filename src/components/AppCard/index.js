@@ -5,6 +5,9 @@ import Http_Bg from '../../assets/http-bg.jpg';
 import {useHistory} from 'react-router-dom';
 import Actions from '../Actions';
 import LabelAndAction from '../LabelAndAction';
+let iconArr=[
+    {key:1,iconClass:'icon-delete',iconType:'del'}
+]
 function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,imgSrc,onActionClick}){
     const history=useHistory();
     function jump(){
@@ -35,7 +38,7 @@ function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,img
              </div>
         </div>
         <div className={Styles.footer}>
-            <LabelAndAction onActionClick={handleActionClick} labelList={labelList}/>
+            <LabelAndAction onActionClick={handleActionClick} iconArr={iconArr} labelList={labelList}/>
         </div>
     </div>
 }
