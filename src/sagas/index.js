@@ -43,11 +43,14 @@ function* watchGetArticleList(){
 function* fetchArticleList(payload){
    const {callback}=payload;
    const result=yield call (getArticleList,payload.payload);
-   const {errcode,data}=result;
+   const {errcode,data,pagination}=result;
    if(errcode==1){
       yield put({
          type:Actions.SYNC_ARTICLE_LIST,
-         payload:data
+         payload:{
+            data,
+            pagination
+         }
       })
    }
    callback && callback(result);

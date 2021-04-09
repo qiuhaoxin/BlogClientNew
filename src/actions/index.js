@@ -10,6 +10,7 @@ export default {
     SELECT_SUB_ID:'select_sub_id',//点击树菜单二级菜单同步当前主题
     SELECT_ARTICLE_ID:'select_article_id',//阅读文章id
     GET_ARTICLE:'get_article',
+    DEL_ARTICLE:'del_article',
     SAVE_ARTICLE:'save_article',
     SYNC_ARTICLE:'sync_article',
     GET_DOMAIN_LIST:'get_domain_list',

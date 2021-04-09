@@ -6,24 +6,67 @@ import AppCard from '../../components/AppCard';
 import {connect} from 'react-redux';
 import Actions from '../../actions';
 import {convertFromRaw} from 'draft-js';
+import Pagination from '../../components/Pagination';
+import message from '../../components/message';
 const labelList=[
     {key:'webpack',name:'webpack'},
     {key:'gch',name:'工程化'}
 ];
 class MainPage extends React.Component{
-    
+    constructor(props){
+        super(props);
+        this.fetchArticles=this._fetchArticles.bind(this);
+        this.handlePaginationChange=this._handlePaginationChange.bind(this);
+        this.handleAction=this._handleActionClick.bind(this);
+    }
     componentDidMount(){
+        const {pagination}=this.props;
+        this.fetchArticles(pagination);
+    }
+    _fetchArticles(pagination){
+        console.log("pagination is ",pagination);
         const {dispatch}=this.props;
         dispatch({
             type:Actions.GET_ARTICLE_LIST,
-            payload:{},
+            payload:{pagination},
             callback:function(res){
                console.log("res is ",res);
+               const {errcode}=res;
+               if(errcode==1){
+                   message.success("成功!",200);
+               }
             }
         })
     }
+    _handleDelArticle(articleId){
+        const {dispatch}=this.props;
+        dispatch({
+            type:Actions.DEL_ARTICLE,
+            payload:{
+                fid:articleId,
+            },
+            callback:function(res){
+
+            }
+        })
+    }
+    _handleActionClick(iconType){
+       switch(iconType){
+           case 'del':
+
+           break;
+       }
+    }
+    _handlePaginationChange(pageIdx){
+        const {pagination}=this.props;
+        let newPagination={
+            ...pagination,
+            current:pageIdx,
+        };
+        this.fetchArticles(newPagination);
+    }
     render(){
-        const {articleList}=this.props;
+        const {articleList,pagination}=this.props;
        return <div className={Styles.wrapper}>
           <div className={Styles.innerWrapper}>
               {
@@ -48,11 +91,13 @@ class MainPage extends React.Component{
                   })
               }
           </div>
+          <Pagination onPaginationChange={this.handlePaginationChange} {...pagination}/>
        </div>
     }
 }
 export default connect((state,initProps)=>{
    return {
        articleList:state.Main.articleList,
+       pagination:state.Main.pagination,
    }
 })(MainPage);

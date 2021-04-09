@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Notification from 'rc-notification';
+import Styles from './index.less';
 // import Icon from '../icon';
 
 let defaultDuration = 3;
@@ -15,7 +16,7 @@ function getMessageInstance(callback) {
     return;
   }
   Notification.newInstance({
-    prefixCls,
+    prefixCls:Styles.wrapper,
     transitionName: 'move-up',
     style: { top: defaultTop }, // 覆盖原来的样式
     getContainer,

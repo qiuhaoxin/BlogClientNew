@@ -1,0 +1,91 @@
+.wrapper {
+  position: relative;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  bottom: 10px;
+  z-index: 1001;
+  height: 60px;
+  flex-shrink: 0;
+  display: inline-flex;
+  & .arrow {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ccc;
+    flex-shrink: 0;
+    &.active {
+      cursor: pointer;
+      background-color: rgb(0, 136, 255);
+      &.leftArrow {
+        &:before {
+          border-right: 12px solid #fff !important;
+        }
+        &:after {
+          border-right: 12px solid rgb(0, 136, 255) !important;
+        }
+      }
+      &.rightArrow {
+        &:before {
+          border-left: 12px solid #fff;
+        }
+        &:after {
+          border-left: 12px solid rgb(0, 136, 255) !important;
+        }
+      }
+    }
+    &.no_active {
+      cursor: not-allowed;
+      background-color: #ccc;
+    }
+  }
+  & .leftArrow {
+    &::before {
+      content: '';
+      position: absolute;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-right: 12px solid #000;
+      left: 18px;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-right: 12px solid #ccc;
+      left: 20px;
+    }
+  }
+  & .rightArrow {
+    &::before {
+      content: '';
+      position: absolute;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 12px solid #000;
+      right: 18px;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 12px solid #ccc;
+      right: 20px;
+    }
+  }
+  & .indicator {
+    flex-grow: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    & span {
+      margin: 0 4px;
+    }
+  }
+}

@@ -52,7 +52,6 @@ class Publish extends React.Component{
             type:Actions.GET_DOMAIN_LIST,
             payload:{},
             callback:function(res){
-                console.log("fetchDomain result is ",res);
             }
         })
     }
@@ -106,16 +105,12 @@ class Publish extends React.Component{
     handleSave=()=>{
         const {dispatch}=this.props;
         const {title,imgSrc,bgImg,subId}=this.state;
-        console.log("bgImg is ",bgImg);
         const _this=this;
         let labelInputList=null;
         if(this.labelInputRef){
             labelInputList=this.labelInputRef.current.getLabelData();
             labelInputList=labelInputList.map(item=>item.name);
-
-            console.log("labelInputList is ",labelInputList);
         }
-        console.log("labelArr is ",this.labelArr);
         if(this.blogEditor){
             const editor=this.blogEditor.current.getJsonFromEditor();
             dispatch({
@@ -133,6 +128,9 @@ class Publish extends React.Component{
                     if(errcode==1){
                         _this.setState({
                             dialogVisible:false,
+                            title:'',
+                            imgSrc:'',
+                            bgImg:'',
                         })
                     }
                 }

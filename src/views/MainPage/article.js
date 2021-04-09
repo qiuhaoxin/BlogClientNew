@@ -98,7 +98,6 @@ class Article extends React.Component{
      render(){
          const {editorState}=this.state;
          const {articleData}=this.props;
-         console.log("fbody is ",articleData);
          return <div className={Styles.wrapper}>
              <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>

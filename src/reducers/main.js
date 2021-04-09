@@ -1,5 +1,10 @@
 const initialState={
     articleList:[],
+    pagination:{
+        current:1,
+        pageSize:15,
+        total:0,
+    },
     isLoading:false,
     article:{}
 }
@@ -7,12 +12,12 @@ import Actions from '../actions'
 
 export default function(state=initialState,action){
     const {type,payload}=action;
-    console.log("payload is ",payload);
     switch(type){
         case Actions.SYNC_ARTICLE_LIST:
             return {
                 ...state,
-                articleList:payload,
+                articleList:payload.data,
+                pagination:payload.pagination
             }
         break;
         case Actions.SYNC_ARTICLE:
