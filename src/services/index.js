@@ -41,6 +41,16 @@ export function getArticleList(params){
         }
     )
 }
+//删除文章
+export function deleteArticle(params){
+    return request(
+        urlPrefix + '/blog/delArticle',
+        {
+            method:'POST',
+            body:params
+        }
+    )
+}
 //获取文章详情
 export function getArticleById(params){
     return request(

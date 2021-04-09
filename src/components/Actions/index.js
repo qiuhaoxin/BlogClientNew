@@ -3,7 +3,7 @@ import Styles from './index.less';
 
 function Actions({onActionClick}){
     function handleClick(){
-        onActionClick && onActionClick('delete')
+        onActionClick && onActionClick('del')
     }
     return <div className={Styles.wrapper}>
         <span>

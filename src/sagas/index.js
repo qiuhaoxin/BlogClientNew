@@ -2,7 +2,8 @@ import {fork,call,put,takeEvery,takeLatest} from 'redux-saga/effects';
 import Actions from '../actions';
 import {fetchBlogsData,fetchBlogCatalog,publish,getArticleList,getArticleById,
    getDomainList,getSubDomainList,saveSubDomain,saveDomain,
-   removeDomain,updateArticle} from '../services';
+   removeDomain,updateArticle,
+   deleteArticle} from '../services';
 function* watchGetBlogsList(){
    yield takeLatest(Actions.GET_BLOG_LIST,getBlogsList);
 }
@@ -54,6 +55,15 @@ function* fetchArticleList(payload){
       })
    }
    callback && callback(result);
+}
+
+function* watchDelArticle(){
+    yield takeEvery(Actions.DEL_ARTICLE,delArticle);
+}
+function* delArticle(payload){
+    const {callback}=payload;
+    const result=yield call(deleteArticle,payload.payload);
+    callback && callback(result);
 }
 
 function* watchGetArticleById(){
@@ -157,6 +167,7 @@ function* updateArticleAPI(payload){
        yield fork(watchSaveDomain);
        yield fork(watchRemoveDomain);
        yield fork(watchUpdateArticle);
+       yield fork(watchDelArticle);
     }catch(e){
 
     }

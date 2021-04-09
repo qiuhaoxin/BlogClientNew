@@ -23,8 +23,7 @@ class MainPage extends React.Component{
         const {pagination}=this.props;
         this.fetchArticles(pagination);
     }
-    _fetchArticles(pagination){
-        console.log("pagination is ",pagination);
+    _fetchArticles(pagination=this.props.pagination){
         const {dispatch}=this.props;
         dispatch({
             type:Actions.GET_ARTICLE_LIST,
@@ -40,20 +39,26 @@ class MainPage extends React.Component{
     }
     _handleDelArticle(articleId){
         const {dispatch}=this.props;
+        const _this=this;
         dispatch({
             type:Actions.DEL_ARTICLE,
             payload:{
                 fid:articleId,
             },
             callback:function(res){
-
+               const {errcode}=res;
+               if(errcode==1){
+                  _this.fetchArticles();
+               }
             }
         })
     }
-    _handleActionClick(iconType){
+    _handleActionClick(iconType,articleId){
+       console.log("articleId handleActionClick is ",articleId);
+       console.log("iconType is ",iconType);
        switch(iconType){
            case 'del':
-
+             this._handleDelArticle(articleId);
            break;
        }
     }
@@ -87,7 +92,7 @@ class MainPage extends React.Component{
                         articleId:item.fid,
                         labelList:item.flabels ? item.flabels.split(',') : []
                     }
-                    return <AppCard key={item.fid} {...cardProps}></AppCard>
+                    return <AppCard onActionClick={this.handleAction} key={item.fid} {...cardProps}></AppCard>
                   })
               }
           </div>

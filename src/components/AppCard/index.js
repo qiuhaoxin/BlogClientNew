@@ -3,22 +3,24 @@ import Styles from './index.less';
 import Label from '../Label';
 import Http_Bg from '../../assets/http-bg.jpg';
 import {useHistory} from 'react-router-dom';
-import Actions from '../Actions'
-function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,imgSrc}){
+import Actions from '../Actions';
+import LabelAndAction from '../LabelAndAction';
+function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,imgSrc,onActionClick}){
     const history=useHistory();
     function jump(){
         history.push(`/article/${articleId}`);
     }
-    function handleActionClick(){
-
+    function handleActionClick(iconType){
+        console.log();
+        onActionClick && onActionClick(iconType,articleId)
     }
     
-    return <div className={Styles.wrapper} onClick={jump}>
-        <div className={Styles.title}>
+    return <div className={Styles.wrapper}>
+        <div className={Styles.title} onClick={jump}>
             <img src={imgSrc ? imgSrc : Http_Bg}/>
             <span>{title}</span>
         </div>
-        <div className={Styles.appDes}>
+        <div className={Styles.appDes} onClick={jump}>
             <div className={Styles.des} dangerouslySetInnerHTML={{__html: appDes}}>
             </div>
              <div className={Styles.articleInfo}>
@@ -33,12 +35,7 @@ function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,img
              </div>
         </div>
         <div className={Styles.footer}>
-             <div className={Styles.labelList}>
-             {
-                 labelList.map((item,index)=><Label key={index} labelText={item}/>)
-             }
-             </div>
-             <Actions onActionClick={handleActionClick}/>
+            <LabelAndAction onActionClick={handleActionClick} labelList={labelList}/>
         </div>
     </div>
 }
