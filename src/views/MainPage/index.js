@@ -7,11 +7,7 @@ import {connect} from 'react-redux';
 import Actions from '../../actions';
 import {convertFromRaw} from 'draft-js';
 import Pagination from '../../components/Pagination';
-import message from '../../components/message';
-const labelList=[
-    {key:'webpack',name:'webpack'},
-    {key:'gch',name:'工程化'}
-];
+// import message from '../../components/message';
 class MainPage extends React.Component{
     constructor(props){
         super(props);
@@ -29,10 +25,9 @@ class MainPage extends React.Component{
             type:Actions.GET_ARTICLE_LIST,
             payload:{pagination},
             callback:function(res){
-               console.log("res is ",res);
                const {errcode}=res;
                if(errcode==1){
-                   message.success("成功!",200);
+                //    message.success("成功!",200);
                }
             }
         })
@@ -54,9 +49,16 @@ class MainPage extends React.Component{
         })
     }
     _handleActionClick(iconType,articleId){
+       const {history}=this.props; 
        switch(iconType){
            case 'del':
              this._handleDelArticle(articleId);
+           break;
+           case 'editor':
+              history.push({
+                  pathname:'/publish',
+                  state:{articleId}
+              });
            break;
        }
     }

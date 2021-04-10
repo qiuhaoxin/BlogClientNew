@@ -112,6 +112,7 @@ class Article extends React.Component{
              <div className={Styles.title}>{articleData.ftitle}</div>
             <div className={Styles.innerWrapper}>
                 <BlogEditor controllerVisible={false} readOnly={true} 
+                mode={0}
                 onActionClick={this.handleActionClick}
                 initContent={articleData && articleData.fbody ? convertFromRaw(JSON.parse(articleData.fbody)) : null}
                 labelList={articleData.flabels ? articleData.flabels.split(','):[]}

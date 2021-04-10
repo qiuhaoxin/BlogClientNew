@@ -20,9 +20,6 @@ function Actions({onActionClick,iconArr}){
                 </span>
             })
         }
-        {/* <span>
-            <i onClick={handleClick} className="icon-delete"></i>
-        </span> */}
     </div>
 }
 

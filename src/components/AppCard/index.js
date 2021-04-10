@@ -6,7 +6,8 @@ import {useHistory} from 'react-router-dom';
 import Actions from '../Actions';
 import LabelAndAction from '../LabelAndAction';
 let iconArr=[
-    {key:1,iconClass:'icon-delete',iconType:'del'}
+    {key:1,iconClass:'icon-delete',iconType:'del'},
+    {key:2,iconClass:"icon-editor",iconType:'editor'}
 ]
 function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,imgSrc,onActionClick}){
     const history=useHistory();
@@ -14,7 +15,6 @@ function AppCard({title='Http',labelList,appDes,userName,timeStamp,articleId,img
         history.push(`/article/${articleId}`);
     }
     function handleActionClick(iconType){
-        console.log();
         onActionClick && onActionClick(iconType,articleId)
     }
     

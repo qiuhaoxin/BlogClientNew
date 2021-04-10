@@ -32,6 +32,7 @@
     "draft-js": "^0.11.7",
     "draftjs-utils": "^0.10.2",
     "lodash.throttle": "^4.1.1",
+    "prop-types": "^15.7.2",
     "rc-dialog": "^8.5.2",
     "rc-notification": "^4.5.5",
     "rc-select": "^12.1.7",

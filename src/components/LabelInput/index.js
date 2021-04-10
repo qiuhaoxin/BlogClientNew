@@ -4,7 +4,15 @@ import Label from '../Label'
 
 export default React.forwardRef(function LabelInput(props,ref){
     const inputRef=useRef();
-    const [labelList,setLabelList]=useState([]);
+    const {initValue}=props;
+    let initLabelList=initValue.map((item,index)=>{
+        return {
+            name:item,
+            id:index,
+        }
+    });
+    const [labelList,setLabelList]=useState(initLabelList);
+    console.log("labelList is ",labelList);
     useImperativeHandle(ref,()=>{
         return {
             getLabelData,
@@ -40,7 +48,8 @@ export default React.forwardRef(function LabelInput(props,ref){
     return <div className={Styles.wrapper} onClick={handleFocus}>
         <div className={Styles.labelList}>
             {
-               labelList.map(item=><Label onLabelDel={handleLabelDel} canDel={true} labelKey={item.id} key={item.id} labelText={item.name} mode={0}></Label>)
+               labelList.map(item=><Label onLabelDel={handleLabelDel} canDel={true} labelKey={item.id} key={item.id} 
+                labelText={item.name} mode={0}></Label>)
             }
         </div>
         <input ref={inputRef} placeholder="请输入" onKeyDown={handleMouseDown}/>

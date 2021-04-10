@@ -1,6 +1,6 @@
 import RcUpload from 'rc-upload';
 import React from 'react';
-function checkImageWH(file, width, height) { // 参数分别是上传的file，想要限制的宽，想要限制的高
+export function checkImageWH(file, width, height) { // 参数分别是上传的file，想要限制的宽，想要限制的高
   return new Promise(function(resolve, reject) {
     let fileReader = new FileReader();
     fileReader.onload = e => {
@@ -17,6 +17,22 @@ function checkImageWH(file, width, height) { // 参数分别是上传的file，�
     };
     fileReader.readAsDataURL(file);
   });
+}
+
+export function preLoadImage(imgSrc){
+    if(!imgSrc)return Promise.reject("图片路径非法!")
+    return new Promise((resolve,reject)=>{
+      let img=new Image();
+      img.onload=function(){
+        resolve({
+            width:this.width,
+            height:this.height,
+          })
+      }
+      img.onerror=reject;
+      img.src=imgSrc;
+    })
+
 }
 /**
  * 

@@ -6,15 +6,12 @@ import {connect} from 'react-redux';
 import Actions from '../../actions';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
-import Select,{Option} from 'rc-select';
 import 'rc-select/assets/index.less';
 import Label from '../../components/Label';
 import LabelInput from '../../components/LabelInput';
-
-const testList=[
-    {fid:1,fname:'qiuhaoxin'}
-]
-
+import {convertFromRaw} from 'draft-js';
+import {checkImageWH,preLoadImage} from '../../components/Draft/Upload';
+import {EditorState} from 'draft-js'
 function Footer(props){
     return <div className={Styles.footer}>
         <span className={Styles.save} onClick={props.onSave}>保存</span>
@@ -26,12 +23,13 @@ class Publish extends React.Component{
         super(props);
         this.inputRef=React.createRef();
         this.state={
-            imgSrc:'',
+            imgSrc:'',//背景图路径
             rect:{height:1,width:1},
             title:'',//主题
-            bgImg:'',//背景图
+            bgImgName:'',//背景图 图片名称
             dialogVisible:false,
             subId:0,
+            initContent:null,
         }
         this.labelArr=[];
         this.labelInputRef=React.createRef();
@@ -44,7 +42,47 @@ class Publish extends React.Component{
         this.handleLabelChecked=this._handleLabelChecked.bind(this);
     }
     componentDidMount(){
+        const {location}=this.props;
+        const articleId=location?.state?.articleId??null;
+        if(articleId){
+            this._fetchArticle(articleId);
+        }
         this._fetchDomainData();
+    }
+    _fetchArticle(articleId){
+        const {dispatch}=this.props;
+        const _this=this;
+        dispatch({
+            type:Actions.GET_ARTICLE,
+            payload:{
+               articleId
+            },
+            callback(res){
+                 const {errcode,data}=res;
+                 if(errcode==1){
+                     const article=data[0];
+                     const {ftitle,fbody,fimg,flabels,fsubId,fid}=article;
+                     const afterConvert=convertFromRaw(JSON.parse(fbody));
+                     _this.fid=fid;
+                     if(flabels){
+                        _this.labelInputList=flabels.split(',');
+                     }
+                     let imgSrc=`http://localhost:5001/img/${fimg}`;
+                     preLoadImage(imgSrc).then(rect=>{
+                         console.log("react checkImage wh is ",rect);
+                         _this.setState({
+                            initContent:afterConvert,
+                            title:ftitle,
+                            bgImgName:fimg,
+                            imgSrc,
+                            rect,
+                            subId:fsubId
+                         })
+                     });
+
+                 }
+            }
+        })
     }
     _fetchDomainData(){
         const {dispatch}=this.props;
@@ -65,7 +103,7 @@ class Publish extends React.Component{
             this.setState({
                 rect:imgRect,
                 imgSrc:imgPath,
-                bgImg:imgName
+                bgImgName:imgName
             })
         }
     }
@@ -104,7 +142,7 @@ class Publish extends React.Component{
     }
     handleSave=()=>{
         const {dispatch}=this.props;
-        const {title,imgSrc,bgImg,subId}=this.state;
+        let {title,imgSrc,bgImgName,subId}=this.state;
         const _this=this;
         let labelInputList=null;
         if(this.labelInputRef){
@@ -113,16 +151,25 @@ class Publish extends React.Component{
         }
         if(this.blogEditor){
             const editor=this.blogEditor.current.getJsonFromEditor();
-            dispatch({
-                type:Actions.PUBLISH,
-                payload:{
+            if(bgImgName && bgImgName.indexOf('/') > -1){
+                const regReg=/\/(([\w]+).(jpe?g|png|gif|webp))$/;
+                const result=regReg.exec(bgImgName);
+                if(result.length > 1){
+                    bgImgName=result[1];
+                }
+            }
+            let params={
+                     fid:_this.fid,
                     title,
                     body:JSON.stringify(editor),
                     subId,
                     userId:1,
-                    bgImg,
+                    bgImgName,
                     labelList:labelInputList
-                },
+            }
+            dispatch({
+                type:Actions.PUBLISH,
+                payload:params,
                 callback:function(res){
                     const {errcode,message}=res;
                     if(errcode==1){
@@ -130,7 +177,9 @@ class Publish extends React.Component{
                             dialogVisible:false,
                             title:'',
                             imgSrc:'',
-                            bgImg:'',
+                            bgImgName:'',
+                            rect:{width:1,height:1},
+                            initContent:null
                         })
                     }
                 }
@@ -146,16 +195,12 @@ class Publish extends React.Component{
         this.setState({
             subId:labelKey,
         })
-        // const idx=this.labelArr.findIndex(item=>item==labelKey);
-        // if(idx > -1){
-        //     this.labelArr.splice(idx,1);
-        // }else{
-        //     this.labelArr.push(labelKey);
-        // }
     }
     render(){
-        const {rect,dialogVisible,subId}=this.state;
+        const {rect,dialogVisible,subId,initContent,title}=this.state;
+        console.log("subId in publish is ",subId);
         const {domainList}=this.props;
+        console.log("react is rect",rect);
         return <div className={Styles.wrapper}>
             <div className={Styles.row}>
                 <span onClick={this.handlePublish}>发表</span>
@@ -174,10 +219,10 @@ class Publish extends React.Component{
                 </div>
             </div>
             <div className={Styles.topic} onClick={this.handleFocus}>
-                <input onChange={this.handleInputChange} ref={this.inputRef} placeholder="请输入标题，最多100字"/>
+                <input value={title}  onChange={this.handleInputChange} ref={this.inputRef} placeholder="请输入标题，最多100字"/>
             </div>
             <div className={Styles.editor}>
-              <BlogEditor controllerVisible={true} ref={this.blogEditor}></BlogEditor>
+              <BlogEditor initContent={initContent} mode={1} controllerVisible={true} ref={this.blogEditor}></BlogEditor>
             </div>
             <Dialog footer={<Footer onSave={this.handleSave} onCancel={this.handleCancel}></Footer>} onClose={this.handleCloseDialog} 
             animation="zoom" visible={dialogVisible} title="发布文章">
@@ -190,7 +235,7 @@ class Publish extends React.Component{
                       }
                   </div>
                   <p style={{margin:10}}>请填写文章标签(可多个，按enter)</p>
-                  <LabelInput ref={this.labelInputRef}></LabelInput>
+                  <LabelInput ref={this.labelInputRef} initValue={this.labelInputList ? this.labelInputList : []}></LabelInput>
             </Dialog>
         </div>
     }
