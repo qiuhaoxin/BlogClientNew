@@ -159,27 +159,24 @@ class Publish extends React.Component{
                 }
             }
             let params={
-                     fid:_this.fid,
+                    fid:_this.fid,
                     title,
                     body:JSON.stringify(editor),
                     subId,
                     userId:1,
-                    bgImgName,
+                    bgImgName:bgImgName ? bgImgName : 'http-bg.jpg',
                     labelList:labelInputList
             }
             dispatch({
                 type:Actions.PUBLISH,
                 payload:params,
                 callback:function(res){
-                    const {errcode,message}=res;
+                    const {errcode,message,data}=res;
+                    _this.fid=data?.fid ?? 0;
                     if(errcode==1){
                         _this.setState({
                             dialogVisible:false,
-                            title:'',
-                            imgSrc:'',
-                            bgImgName:'',
-                            rect:{width:1,height:1},
-                            initContent:null
+                            // initContent:editor
                         })
                     }
                 }
