@@ -157,6 +157,23 @@ export function toggleAddImage(editorState,imgInfo){
         return editorState;
     }
 }
+// 添加Code Pen 
+export function toggleAddCodePen(editorState,codePenCode){
+    try{
+        const contentState=editorState.getCurrentContent();
+        const nextContentState=contentState.createEntity("codePen","MUTABLE",{
+            codePenInfo:codePenCode
+        });
+        const lastEntityKey=nextContentState.getLastCreatedEntityKey();
+        let nextEditorState=EditorState.set(editorState,{
+            currentContent:nextContentState,
+        });
+        return AtomicBlockUtils.insertAtomicBlock(nextEditorState,lastEntityKey,' ');
+    }catch(ex){
+        console.error("toggleAddCodePen error is ",ex);
+        return editorState;
+    }
+}
 export function toggleSelectionLink(editorState,href,target){
     console.log("togglesSelectionList ",href+" and target is ",target);
     const contentState=editorState.getCurrentContent();

@@ -7,12 +7,17 @@ import Styles from './index.less';
 import BlockStyleCtls from './BlockStyleCtls';
 import 'draft-js/dist/Draft.css';
 import LabelAndAction from '../LabelAndAction';
+import {loadScriptDynamic} from '../../utils';
 
 const decorator=new CompositeDecorator([
     {
         strategy:findEntitiesLink,
         component:Link,
-    }
+    },
+    // {
+    //     strategy:findEntitiesCodePen,
+    //     component:CodePen,
+    // }
 ])
 function findEntitiesLink(contentBlock,callback,contentState){
     //findEntityRanges
@@ -28,6 +33,18 @@ function findEntitiesLink(contentBlock,callback,contentState){
     )
 
 }
+function findEntitiesCodePen(contentBlock,callback,contentState){
+    contentBlock.findEntityRanges(
+        character=>{
+            const entityKey=character.getEntity();
+            if(entityKey){
+                const res=contentState.getEntity(entityKey).getType();
+            }
+            return (entityKey!==null && contentState.getEntity(entityKey).getType==='codePen');
+        },
+        callback
+    )
+}
 function Link(props){
     const {href}=props.contentState.getEntity(props.entityKey).getData();
     return <a href={href} style={{color: '#1890ff',textDecoration: 'underline'}}>
@@ -35,6 +52,19 @@ function Link(props){
             props.children
         }
     </a>
+}
+function CodePenDIV({codePenInfo}){
+    const {codeFragment,srcInfo}=codePenInfo;
+     loadScriptDynamic(srcInfo);
+    //  return <div dangerouslySetInnerHTML={{__html:codeFragment}}>
+        
+    //  </div>
+    return <p className="codepen" data-height="265" data-theme-id="dark" data-default-tab="css,result" data-user="qiuhaoxin" 
+    data-slug-hash="VwPQwgJ" 
+    
+    data-pen-title="position">
+
+    </p>
 }
 function getCustomStyleFn(styleSet,block){
      let output={};
@@ -103,7 +133,7 @@ const Media = (props) => {
     const entity = props.contentState.getEntity(
       props.block.getEntityAt(0)
     );
-    const {src} = entity.getData();
+    const {src,codePenInfo} = entity.getData();
     const type = entity.getType();
     let media;
     if (type === 'audio') {
@@ -113,6 +143,9 @@ const Media = (props) => {
     } else if (type === 'video') {
     //   media = <Video src={src} />;
     }
+    else if(type==='codePen'){
+        media=<CodePenDIV codePenInfo={codePenInfo}/>;
+    }
 
     return media;
   };
@@ -120,7 +153,6 @@ class BlogEditor extends React.Component{
     constructor(props){
         super(props);
         this.editor=createRef();
-        console.log("initContent is ",props.initContent);
         this.state={
             editorState:EditorState.createEmpty(decorator),
         }
@@ -134,11 +166,11 @@ class BlogEditor extends React.Component{
     }
     UNSAFE_componentWillReceiveProps(nextProps){
         const {initContent}=nextProps;
-        if(!initContent){
-            this.setState({
-                editorState:EditorState.createEmpty(decorator)
-            })
-        }
+        // if(!initContent){
+        //     this.setState({
+        //         editorState:EditorState.createEmpty(decorator)
+        //     })
+        // }
         if(initContent && initContent!=this.props.initContent){
             this.setState({
                 editorState:EditorState.createWithContent(initContent,decorator)
