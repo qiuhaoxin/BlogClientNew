@@ -9,7 +9,6 @@ export function isExistsScript(src){
     return result;
 }
 export function loadScriptDynamic(src){
-    // if(isExistsScript(src))return;
     let scriptDom=document.createElement('script');
     scriptDom.onload=function(){
         console.log("脚本下载完成!");
