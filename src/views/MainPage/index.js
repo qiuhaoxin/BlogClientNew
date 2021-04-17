@@ -86,7 +86,7 @@ class MainPage extends React.Component{
                     const cardProps={
                         title:item.title,
                         userName:item.userName,
-                        timeStamp:item.fcreatetime,//item.fcreatetime,
+                        timeStamp:item.fcreatetime || item.ftimestamp,//item.fcreatetime,
                         imgSrc:item.fimg ? `http://localhost:5001/img/${item.fimg}` : null,
                         appDes,
                         articleId:item.fid,
